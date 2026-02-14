@@ -36,6 +36,21 @@ The ranking algorithm must be mathematically sound, explainable, and produce def
 - Trading execution / portfolio management — recommendation only
 - Real-time websocket streaming — 5-min polling is sufficient
 
+## Current Milestone: v1.0 Smart Stock Ranker
+
+**Goal:** Build a working stock ranking app with real Yahoo Finance data, quantitative algorithm, domain selection, and responsive UI.
+
+**Target features:**
+- Domain selection from curated list (~10-15) + custom domains
+- Real Yahoo Finance data fetching every 5 minutes with caching
+- Quantitative ranking algorithm (momentum, volume, volatility, sector strength, ratios)
+- Top 5 stocks per domain + "Best Overall Investment Today"
+- Mathematical score explanations
+- Historical score tracking + daily performance
+- Simple auth (login to save preferences)
+- Desktop + mobile responsive fintech UI
+- Deployable on Hostinger VPS
+
 ## Context
 
 - Data source: Yahoo Finance (free, no API key, some rate limits)
@@ -62,4 +77,4 @@ The ranking algorithm must be mathematically sound, explainable, and produce def
 | Fixed + custom domains | Curated list for quick start, custom for flexibility | — Pending |
 
 ---
-*Last updated: 2026-02-14 after initialization*
+*Last updated: 2026-02-15 after milestone v1.0 start*
