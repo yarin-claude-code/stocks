@@ -27,6 +27,13 @@
 - `backend/models/` — SQLAlchemy models (Stock, Domain, ScoreSnapshot)
 - `backend/scheduler.py` — APScheduler setup in FastAPI lifespan
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffold, SQLAlchemy models, Alembic init
+- [ ] 01-02-PLAN.md — TDD: yfinance batch fetcher + data validation
+- [ ] 01-03-PLAN.md — APScheduler polling, DB upsert, health endpoint
+
 **Research needed:** No (standard yfinance + APScheduler patterns)
 
 ---
