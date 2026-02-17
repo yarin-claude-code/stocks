@@ -3,9 +3,9 @@
 ## Current Position
 
 Phase: 1 — Data Pipeline Foundation
-Plan: 3 (01-03-PLAN.md)
-Status: Plan 01-02 complete — ready for Plan 01-03
-Last activity: 2026-02-17 — Plan 01-02 executed (yfinance batch fetcher + TDD test suite)
+Plan: 3 (01-03-PLAN.md) — COMPLETE
+Status: Phase 01 complete — all 3 plans executed
+Last activity: 2026-02-17 — Plan 01-03 executed (APScheduler + health endpoint)
 
 ## Accumulated Context
 
@@ -19,6 +19,10 @@ Last activity: 2026-02-17 — Plan 01-02 executed (yfinance batch fetcher + TDD 
 - **Single yf.download() batch call** — Avoids per-ticker rate limiting and latency
 - **math.isnan() for validation** — Pure function, no pandas dependency in validate_ticker_data()
 - **fetch_all_stocks silent fallback** — Returns {} on ANY exception, never raises to caller
+- **BackgroundScheduler (sync)** — yfinance is sync; AsyncIOScheduler would block the event loop
+- **Separate sync SQLite engine in scheduler** — Cannot use aiosqlite engine from background thread
+- **scheduler.shutdown(wait=False)** — Prevents blocking app shutdown during active fetch
+- **seed.py extracted from database.py** — Separates seed logic from DB connection module
 
 ## Performance Metrics
 
@@ -26,3 +30,4 @@ Last activity: 2026-02-17 — Plan 01-02 executed (yfinance batch fetcher + TDD 
 |-------|------|----------|-------|-------|
 | 01    | 01   | 25min    | 2     | 13    |
 | 01    | 02   | 15min    | 2     | 4     |
+| 01    | 03   | 15min    | 2     | 5     |
