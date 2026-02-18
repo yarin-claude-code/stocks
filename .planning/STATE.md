@@ -3,45 +3,33 @@
 ## Current Position
 
 Phase: 02 — Ranking Algorithm
-Plan: 2 (02-02-PLAN.md) — COMPLETE
 Status: Phase 02 complete — 2/2 plans executed
-Last activity: 2026-02-18 — Plan 02-02 executed (data fetcher extension + scheduler wiring)
+Last activity: 2026-02-18 — Plan 02-02 executed
 
-## Accumulated Context
+## Key Decisions
 
-### Roadmap Evolution
+| Decision | Detail |
+|----------|--------|
+| SQLAlchemy 2.0 | `Mapped[T]` / `mapped_column` — not legacy Column |
+| Two-engine pattern | asyncpg (FastAPI) + psycopg2 (scheduler) |
+| BackgroundScheduler | yfinance is sync — AsyncIOScheduler would block event loop |
+| FastAPI lifespan | `@asynccontextmanager` — not deprecated `@app.on_event` |
+| yf.download() batch | Avoids per-ticker rate limits |
+| fetch_all_stocks fallback | Returns `{}` on any exception, never raises |
+| Supabase port 5432 | Not 6543 (pgbouncer) — required for SQLAlchemy session mode |
+| epsilon guard (1e-12) | np.std of identical floats returns ~6.9e-18, not exactly 0 |
+| ddof=0 | Population std for Z-score normalization |
+| Pre-invert volatility/PE | Inverted in compute_factors_for_ticker() before rank_domain() |
+| DOMAIN_GROUPS in fetch_cycle() | Hardcoded for Phase 2 — Phase 3 replaces with DB query |
+| Second yf.download() in fetch_cycle() | Simpler than refactoring fetch_all_stocks() |
 
-- Phase 01.1 inserted after Phase 1: SQLite to Supabase Postgres Migration (URGENT)
+## Performance
 
-### Decisions
-
-- **SQLAlchemy 2.0 Mapped syntax** — Used `Mapped[T]` / `mapped_column` (not legacy Column) for type-safe models
-- **Alembic async migrations** — `async_engine_from_config` + `asyncio.run` in `run_migrations_online`
-- **Idempotent seed** — `seed_db()` uses select-then-insert to avoid duplicate errors on re-runs
-- **FastAPI lifespan** — Using `@asynccontextmanager` lifespan (not deprecated `@app.on_event`)
-- **Single yf.download() batch call** — Avoids per-ticker rate limiting and latency
-- **math.isnan() for validation** — Pure function, no pandas dependency in validate_ticker_data()
-- **fetch_all_stocks silent fallback** — Returns {} on ANY exception, never raises to caller
-- **BackgroundScheduler (sync)** — yfinance is sync; AsyncIOScheduler would block the event loop
-- **Two-engine pattern (Postgres)** — async engine (asyncpg) for FastAPI, sync engine (psycopg2) for scheduler thread
-- **scheduler.shutdown(wait=False)** — Prevents blocking app shutdown during active fetch
-- **sync_database_url property on Settings** — Derives psycopg2 URL from asyncpg URL; single source of truth
-- **Alembic URL via config.set_main_option** — configparser %(VAR)s interpolation cannot read env vars; inject programmatically in env.py after load_dotenv()
-- **Supabase direct port 5432** — Not pgbouncer 6543; required for SQLAlchemy session mode compatibility
-- **epsilon tolerance (1e-12) for std==0 guard** — np.std of identical floats returns ~6.9e-18 not exactly 0.0; tolerance avoids incorrect Z-scores
-- **population std ddof=0** — Matches spec; Z-score normalization uses population (not sample) standard deviation
-- [Phase 02]: Pre-invert volatility and financial_ratio in compute_factors_for_ticker() so rank_domain() receives higher=better values
-- [Phase 02]: DOMAIN_GROUPS defined inside fetch_cycle() for Phase 2 — Phase 3 will replace with DB query
-- [Phase 02]: Second yf.download() in fetch_cycle() for factor computation — simpler than refactoring fetch_all_stocks()
-
-## Performance Metrics
-
-| Phase | Plan | Duration | Tasks | Files |
-|-------|------|----------|-------|-------|
-| 01    | 01   | 25min    | 2     | 13    |
-| 01    | 02   | 15min    | 2     | 4     |
-| 01    | 03   | 15min    | 2     | 5     |
-| 01.1  | 01   | 35min    | 3     | 7     |
-| 02    | 01   | 3min     | 2     | 2     |
-| 02    | 02   | 8min     | 2     | 2     |
-
+| Phase | Plan | Duration | Files |
+|-------|------|----------|-------|
+| 01 | 01 | 25min | 13 |
+| 01 | 02 | 15min | 4 |
+| 01 | 03 | 15min | 5 |
+| 01.1 | 01 | 35min | 7 |
+| 02 | 01 | 3min | 2 |
+| 02 | 02 | 8min | 2 |

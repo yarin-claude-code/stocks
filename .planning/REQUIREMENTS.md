@@ -1,121 +1,43 @@
-# Requirements: Smart Stock Recommendation App
+# Requirements: Smart Stock Ranker v1.0
 
-**Defined:** 2026-02-17
-**Core Value:** Mathematically grounded, explainable stock ranking algorithm — algorithm quality is the product.
+**Core value:** Explainable math-based stock ranking.
 
-## v1.0 Requirements
+## v1.0
 
-Requirements for initial release. Each maps to roadmap phases.
-
-### Data Pipeline
-
-- [ ] **DATA-01**: App fetches stock price/volume data from Yahoo Finance in batch every 5 minutes
-- [ ] **DATA-02**: App caches fetched data in database to avoid redundant API calls
-- [ ] **DATA-03**: App falls back to last-known-good data when Yahoo Finance fetch fails
-- [ ] **DATA-04**: App validates fetched data for completeness (no NaN, no empty results)
-- [ ] **DATA-05**: App displays "last updated" timestamp on all data views
-
-### Ranking Algorithm
-
-- [x] **ALGO-01**: App calculates composite score using 5 factors: price momentum, volume change, volatility, sector relative strength, financial ratios
-- [x] **ALGO-02**: App normalizes all factors via z-score normalization with outlier capping (±3 std dev)
-- [x] **ALGO-03**: App produces a single weighted score (0-100 scale) per stock
-- [ ] **ALGO-04**: App displays the top 5 ranked stocks per selected domain
-- [x] **ALGO-05**: App displays a single "Best Overall Investment Today" across all domains
-- [x] **ALGO-06**: App shows mathematical breakdown of how each stock's score was computed (per-factor contribution)
-
-### Domain System
-
-- [ ] **DOM-01**: User can select interest domains from a curated list (~10-15: AI, Semiconductors, Fintech, Sports, etc.)
-- [ ] **DOM-02**: Each curated domain maps to a validated set of stock tickers
-- [ ] **DOM-03**: User can create custom domains with user-selected stock tickers
-- [ ] **DOM-04**: App validates stock tickers against Yahoo Finance before accepting them
-
-### Dashboard UI
-
-- [ ] **UI-01**: User sees a responsive dashboard with selected domains and their top 5 stocks
-- [ ] **UI-02**: User can click a stock to see its full score breakdown
-- [ ] **UI-03**: App shows loading/skeleton states during data refresh
-- [ ] **UI-04**: App shows "Market Closed" banner with last close data outside trading hours
-- [ ] **UI-05**: Dashboard works on desktop and mobile (responsive fintech style)
-
-### Authentication
-
-- [ ] **AUTH-01**: User can register with email and password
-- [ ] **AUTH-02**: User can log in and receive a JWT token
-- [ ] **AUTH-03**: User session persists across browser refresh
-- [ ] **AUTH-04**: User's domain selections are saved and restored on login
-
-### Historical Tracking
-
-- [ ] **HIST-01**: App stores daily score snapshots for all ranked stocks
-- [ ] **HIST-02**: User can view a stock's score history over time (chart)
-- [ ] **HIST-03**: App shows score trend indicators (rising/falling) on the dashboard
-
-## v2 Requirements
-
-Deferred to future release. Tracked but not in current roadmap.
-
-### Notifications
-
-- **NOTF-01**: User receives alerts when a stock enters/exits top 5
-- **NOTF-02**: User receives daily digest email with best picks
-
-### Advanced Features
-
-- **ADV-01**: User can compare 2 stocks side-by-side
-- **ADV-02**: User can configure algorithm weights (advanced mode)
-- **ADV-03**: App supports additional data sources beyond Yahoo Finance
+| ID | Requirement | Phase | Status |
+|----|-------------|-------|--------|
+| DATA-01 | Batch fetch from Yahoo Finance every 5 min | 1 | ✓ |
+| DATA-02 | Cache in DB | 1, 01.1 | ✓ |
+| DATA-03 | Fallback to last-known-good on fetch failure | 1 | ✓ |
+| DATA-04 | Validate fetched data (no NaN/empty) | 1 | ✓ |
+| DATA-05 | Display "last updated" timestamp | 1 | ✓ |
+| ALGO-01 | 5-factor composite score | 2 | ✓ |
+| ALGO-02 | Z-score normalization ±3σ cap | 2 | ✓ |
+| ALGO-03 | Weighted score 0–100 per stock | 2 | ✓ |
+| ALGO-04 | Top 5 stocks per domain | 2 | ✓ |
+| ALGO-05 | "Best Overall Investment Today" | 2 | ✓ |
+| ALGO-06 | Per-factor score breakdown | 2 | ✓ |
+| DOM-01 | Curated domain list (~10-15) | 3 | — |
+| DOM-02 | Domain → ticker mapping | 3 | — |
+| DOM-03 | Custom domains | 5 | — |
+| DOM-04 | Ticker validation | 5 | — |
+| UI-01 | Responsive dashboard with top 5 per domain | 3 | — |
+| UI-02 | Click stock → score breakdown | 3 | — |
+| UI-03 | Loading/skeleton states | 3 | — |
+| UI-04 | "Market Closed" banner | 3 | — |
+| UI-05 | Desktop + mobile | 3 | — |
+| AUTH-01 | Register email/password | 4 | — |
+| AUTH-02 | Login + JWT | 4 | — |
+| AUTH-03 | Session persistence | 4 | — |
+| AUTH-04 | Save domain preferences | 4 | — |
+| HIST-01 | Daily score snapshots | 5 | — |
+| HIST-02 | Score history chart | 5 | — |
+| HIST-03 | Trend indicators | 5 | — |
 
 ## Out of Scope
+ML predictions, sentiment, real-time streaming, portfolio tracking, trading execution, backtesting.
 
-| Feature | Reason |
-|---------|--------|
-| ML/AI predictions | Contradicts core value of explainable math |
-| Social sentiment analysis | Noisy signal, API costs, out of scope per PROJECT.md |
-| Real-time streaming | 5-min polling sufficient, massive complexity |
-| Portfolio tracking | Different product, liability concerns |
-| Trading execution | Recommendation only per PROJECT.md |
-| Backtesting | Survivorship bias risk, complex to do correctly |
-| Price alerts | Requires persistent connections, defer to v2+ |
+## v2 (deferred)
+Alerts (NOTF-01, NOTF-02), stock comparison, configurable weights, additional data sources.
 
-## Traceability
-
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| DATA-01 | Phase 1 | Pending |
-| DATA-02 | Phase 1 | Pending |
-| DATA-03 | Phase 1 | Pending |
-| DATA-04 | Phase 1 | Pending |
-| DATA-05 | Phase 1 | Pending |
-| ALGO-01 | Phase 2 | Complete |
-| ALGO-02 | Phase 2 | Complete |
-| ALGO-03 | Phase 2 | Complete |
-| ALGO-04 | Phase 2 | Pending |
-| ALGO-05 | Phase 2 | Complete |
-| ALGO-06 | Phase 2 | Complete |
-| DOM-01 | Phase 3 | Pending |
-| DOM-02 | Phase 3 | Pending |
-| DOM-03 | Phase 5 | Pending |
-| DOM-04 | Phase 5 | Pending |
-| UI-01 | Phase 3 | Pending |
-| UI-02 | Phase 3 | Pending |
-| UI-03 | Phase 3 | Pending |
-| UI-04 | Phase 3 | Pending |
-| UI-05 | Phase 3 | Pending |
-| AUTH-01 | Phase 4 | Pending |
-| AUTH-02 | Phase 4 | Pending |
-| AUTH-03 | Phase 4 | Pending |
-| AUTH-04 | Phase 4 | Pending |
-| HIST-01 | Phase 5 | Pending |
-| HIST-02 | Phase 5 | Pending |
-| HIST-03 | Phase 5 | Pending |
-
-**Coverage:**
-- v1.0 requirements: 27 total
-- Mapped to phases: 27 ✓
-- Unmapped: 0
-
----
-*Requirements defined: 2026-02-17*
-*Last updated: 2026-02-17 after initial definition*
+*Defined: 2026-02-17*

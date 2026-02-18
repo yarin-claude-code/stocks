@@ -220,6 +220,17 @@ Examples:
 - Do not over-engineer — minimum complexity for the current task
 - Ask before taking irreversible or high-blast-radius actions
 
+## Planning Doc Style (ENFORCED)
+
+All `.planning/**/*.md` files must be **short and scannable**:
+- No paragraph prose — use tables, bullet points, code blocks only
+- No repeated information across sections
+- PLAN.md files: behavior spec + tasks + verify commands only — no narrative
+- SUMMARY.md files: max 30 lines — what was built, decisions made, next step
+- RESEARCH.md files: max 40 lines — findings + recommendation only
+- ROADMAP.md / STATE.md / REQUIREMENTS.md: tables and bullets only, no paragraphs
+- When in doubt: cut it out. If it's in CLAUDE.md or code, don't repeat it in planning docs.
+
 ---
 
 ## Token Efficiency Rules
