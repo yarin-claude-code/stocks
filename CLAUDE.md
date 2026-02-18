@@ -177,3 +177,56 @@ See `.planning/phases/02-ranking-algorithm/02-01-PLAN.md` for full spec.
 - Do not use `ddof=1` (sample std) — use `ddof=0` (population std)
 - Do not import I/O dependencies inside `ranking_engine.py`
 - Do not change Supabase port to 6543 (pgbouncer) — use 5432
+
+---
+
+## Git Workflow
+
+**Branching:**
+- `main` — stable, production-ready
+- `gsd/phase-XX.Y-*` — GSD-managed phase branches (do not create manually)
+- `refactor/*` — structural refactors
+- `feature/*` — new features
+- `fix/*` — bug fixes
+- No branch needed for tiny edits (typo fixes, single-line changes)
+
+**Commit message format:**
+```
+<type>(<scope>): <short description>
+
+type: feat | fix | refactor | chore | docs | test
+scope: backend | frontend | db | planning | claude | devops | git
+```
+
+Examples:
+- `feat(backend): add composite score endpoint`
+- `fix(db): correct asyncpg connection pool teardown`
+- `chore(git): clean runtime artifacts and update gitignore`
+
+**Rules:**
+- Atomic commits — one logical change per commit
+- Never commit `.env`, `*.db`, `*.log`, `__pycache__/`, `*.pyc`
+- Clean debug logs before committing
+- Do not use `--no-verify` to bypass hooks
+
+---
+
+## Response Style Guidelines
+
+- Be concise — no verbose explanations unless asked
+- Reference file paths with line numbers: `app/services/ranking_engine.py:42`
+- Do not restate the full plan before acting
+- Do not add docstrings, comments, or type annotations to code you didn't change
+- Do not over-engineer — minimum complexity for the current task
+- Ask before taking irreversible or high-blast-radius actions
+
+---
+
+## Token Efficiency Rules
+
+- Never restate full plans — reference the plan file instead
+- Reference mission/phase IDs (e.g. "Phase 02") not full descriptions
+- Avoid verbose explanations unless explicitly asked
+- Output minimal necessary code — no scaffolding beyond what's needed
+- Avoid unnecessary inline comments — only comment non-obvious logic
+- Context files in `.claude/context/` are the canonical reference — do not repeat their content in responses
