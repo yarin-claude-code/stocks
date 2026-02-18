@@ -38,6 +38,16 @@ Plans:
 
 ---
 
+### Phase 01.1: SQLite to Supabase Postgres Migration (INSERTED)
+
+**Goal:** Migrate every SQLite-specific concern to Supabase Postgres — asyncpg for async engine, psycopg2-binary for scheduler sync engine, remove WAL mode listener, update Alembic, update .env.
+**Depends on:** Phase 1
+**Requirements covered:** DATA-02
+**Plans:** 1 plan
+
+Plans:
+- [ ] 01.1-01-PLAN.md — Swap drivers, update config/database/scheduler, run Alembic migration to Supabase
+
 ## Phase 2: Ranking Algorithm
 
 **Goal:** Mathematically sound, explainable scoring engine — the core product differentiator.
@@ -94,18 +104,17 @@ Plans:
 
 **Delivers:**
 - User registration and login (email + password)
-- JWT token auth (python-jose, passlib/bcrypt)
-- Session persistence across browser refresh (JWT in localStorage)
+- Supabase Auth integration (`supabase-auth` package — NOT `python-jose`/`passlib`/`gotrue` which was deprecated Aug 2025)
+- Session persistence across browser refresh (Supabase session token in localStorage)
 - Saved domain selections per user
 - Protected endpoints for preference management
 
 **Architecture:**
 - `backend/routers/auth.py`
-- `backend/services/auth_service.py`
-- `backend/models/user.py` — User SQLAlchemy model
+- `backend/services/auth_service.py` — wraps Supabase Auth client
 - Frontend: login/register page, auth context, protected routes
 
-**Research needed:** No (standard FastAPI JWT auth pattern)
+**Research needed:** Yes — `/gsd:research-phase 4` for supabase-auth Python SDK usage patterns (gotrue deprecated Aug 2025; use supabase-auth)
 
 ---
 
@@ -138,7 +147,7 @@ Plans:
 | Requirement | Phase |
 |-------------|-------|
 | DATA-01 | 1 |
-| DATA-02 | 1 |
+| DATA-02 | 1, 01.1 |
 | DATA-03 | 1 |
 | DATA-04 | 1 |
 | DATA-05 | 1 |
@@ -172,12 +181,13 @@ Plans:
 ## Phase Ordering Rationale
 
 1. **Data first** — nothing works without reliable Yahoo Finance integration; rate limiting is the #1 technical risk
-2. **Algorithm second** — the ranking engine IS the product; must be correct and tested before building UI around it
-3. **Dashboard third** — proves MVP value with functional ranked stock display
-4. **Auth fourth** — adds stickiness and user context needed for personalization
-5. **History + custom domains last** — depth features that require auth foundation
+2. **01.1 DB migration** — Supabase Postgres required before Phase 2 can depend on a stable DB layer
+3. **Algorithm second** — the ranking engine IS the product; must be correct and tested before building UI around it
+4. **Dashboard third** — proves MVP value with functional ranked stock display
+5. **Auth fourth** — adds stickiness and user context needed for personalization
+6. **History + custom domains last** — depth features that require auth foundation
 
 ---
 
 *Roadmap created: 2026-02-17*
-*Last updated: 2026-02-17 after research synthesis*
+*Last updated: 2026-02-18 — inserted Phase 01.1 (Supabase migration), updated Phase 4 auth to use supabase-auth (gotrue deprecated Aug 2025)*
