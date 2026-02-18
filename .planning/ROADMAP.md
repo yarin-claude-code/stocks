@@ -69,6 +69,12 @@ Plans:
 
 **Research needed:** Yes — `/gsd:research-phase 2` for quantitative normalization best practices and factor weight selection methodologies
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — TDD: pure ranking engine (normalize, weight, scale, rank) with 6 edge-case tests
+- [ ] 02-02-PLAN.md — Factor computation in data_fetcher + wire rank_domain() into scheduler
+
 ---
 
 ## Phase 3: API & Dashboard
