@@ -2,32 +2,34 @@
 
 ## Current Position
 
-Phase: 1 — Data Pipeline Foundation
-Plan: 3 (01-03-PLAN.md) — COMPLETE
-Status: Phase 01 complete — all 3 plans executed
-Last activity: 2026-02-17 — Plan 01-03 executed (APScheduler + health endpoint)
+Phase: 02 — Ranking Algorithm
+Status: Phase 02 complete — 2/2 plans executed
+Last activity: 2026-02-18 — Plan 02-02 executed
 
-## Accumulated Context
+## Key Decisions
 
-### Decisions
+| Decision | Detail |
+|----------|--------|
+| SQLAlchemy 2.0 | `Mapped[T]` / `mapped_column` — not legacy Column |
+| Two-engine pattern | asyncpg (FastAPI) + psycopg2 (scheduler) |
+| BackgroundScheduler | yfinance is sync — AsyncIOScheduler would block event loop |
+| FastAPI lifespan | `@asynccontextmanager` — not deprecated `@app.on_event` |
+| yf.download() batch | Avoids per-ticker rate limits |
+| fetch_all_stocks fallback | Returns `{}` on any exception, never raises |
+| Supabase port 5432 | Not 6543 (pgbouncer) — required for SQLAlchemy session mode |
+| epsilon guard (1e-12) | np.std of identical floats returns ~6.9e-18, not exactly 0 |
+| ddof=0 | Population std for Z-score normalization |
+| Pre-invert volatility/PE | Inverted in compute_factors_for_ticker() before rank_domain() |
+| DOMAIN_GROUPS in fetch_cycle() | Hardcoded for Phase 2 — Phase 3 replaces with DB query |
+| Second yf.download() in fetch_cycle() | Simpler than refactoring fetch_all_stocks() |
 
-- **SQLAlchemy 2.0 Mapped syntax** — Used `Mapped[T]` / `mapped_column` (not legacy Column) for type-safe models
-- **Async engine with WAL mode** — WAL set via `event.listens_for(engine.sync_engine, "connect")`, correct for async
-- **Alembic async migrations** — `async_engine_from_config` + `asyncio.run` in `run_migrations_online`
-- **Idempotent seed** — `seed_db()` uses select-then-insert to avoid duplicate errors on re-runs
-- **FastAPI lifespan** — Using `@asynccontextmanager` lifespan (not deprecated `@app.on_event`)
-- **Single yf.download() batch call** — Avoids per-ticker rate limiting and latency
-- **math.isnan() for validation** — Pure function, no pandas dependency in validate_ticker_data()
-- **fetch_all_stocks silent fallback** — Returns {} on ANY exception, never raises to caller
-- **BackgroundScheduler (sync)** — yfinance is sync; AsyncIOScheduler would block the event loop
-- **Separate sync SQLite engine in scheduler** — Cannot use aiosqlite engine from background thread
-- **scheduler.shutdown(wait=False)** — Prevents blocking app shutdown during active fetch
-- **seed.py extracted from database.py** — Separates seed logic from DB connection module
+## Performance
 
-## Performance Metrics
-
-| Phase | Plan | Duration | Tasks | Files |
-|-------|------|----------|-------|-------|
-| 01    | 01   | 25min    | 2     | 13    |
-| 01    | 02   | 15min    | 2     | 4     |
-| 01    | 03   | 15min    | 2     | 5     |
+| Phase | Plan | Duration | Files |
+|-------|------|----------|-------|
+| 01 | 01 | 25min | 13 |
+| 01 | 02 | 15min | 4 |
+| 01 | 03 | 15min | 5 |
+| 01.1 | 01 | 35min | 7 |
+| 02 | 01 | 3min | 2 |
+| 02 | 02 | 8min | 2 |

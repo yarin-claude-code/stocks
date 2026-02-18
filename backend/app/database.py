@@ -1,17 +1,9 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import event, select
+from sqlalchemy import select
 from .config import settings
 
 engine = create_async_engine(settings.database_url, echo=False)
-
-
-# Enable WAL mode for SQLite (better concurrent read performance)
-@event.listens_for(engine.sync_engine, "connect")
-def set_wal_mode(dbapi_conn, connection_record):
-    dbapi_conn.execute("PRAGMA journal_mode=WAL")
-
-
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 

@@ -1,12 +1,17 @@
 """
-data_fetcher.py — yfinance batch data fetcher and validation.
+data_fetcher.py — yfinance batch data fetcher, validation, and factor computation.
 
 Fetches the most recent close price and volume for a list of tickers
 using a single yf.download() batch call. Falls back to an empty dict
 on any yfinance error (never raises to the caller).
+
+compute_factors_for_ticker() extracts all 5 raw factor values from a
+30-day history DataFrame. Each factor is independently wrapped in
+try/except so one failure does not block others.
 """
 import math
 import logging
+import numpy as np
 import yfinance as yf
 
 logger = logging.getLogger(__name__)
@@ -46,7 +51,7 @@ def fetch_all_stocks(tickers: list[str] | None = None) -> dict[str, dict]:
     try:
         raw = yf.download(
             tickers,
-            period="2d",
+            period="30d",
             interval="1d",
             auto_adjust=True,
             progress=False,
@@ -72,3 +77,101 @@ def fetch_all_stocks(tickers: list[str] | None = None) -> dict[str, dict]:
     except Exception as exc:
         logger.error("yfinance batch download failed: %s", exc)
         return {}
+
+
+def compute_factors_for_ticker(
+    ticker: str,
+    history: "pd.DataFrame",       # full multi-ticker yf.download() result (30d)
+    all_histories: "pd.DataFrame",  # same object — used for relative_strength
+    domain_tickers: list[str],      # all tickers in this stock's domain
+) -> dict[str, float | None]:
+    """Compute all 5 raw factor values for a single ticker from a 30-day history DataFrame.
+
+    Each factor is independently wrapped in try/except so one failure does not block others.
+    volatility and financial_ratio are pre-inverted (multiplied by -1.0) before returning
+    so that higher raw value = better score.
+
+    Returns
+    -------
+    dict with keys: momentum, volume_change, volatility, relative_strength, financial_ratio.
+    Values are float or None when the factor cannot be computed.
+    """
+    try:
+        # --- Factor 1: momentum (5-day price return) ---
+        momentum: float | None = None
+        try:
+            close_series = history["Close"][ticker].dropna()
+            if len(close_series) >= 6:
+                val = float(close_series.pct_change(5).iloc[-1])
+                momentum = None if math.isnan(val) else val
+        except Exception as exc:
+            logger.warning("momentum computation failed for %s: %s", ticker, exc)
+
+        # --- Factor 2: volume_change (5-day % change) ---
+        volume_change: float | None = None
+        try:
+            vol_series = history["Volume"][ticker].dropna()
+            if len(vol_series) >= 6:
+                val = float(vol_series.pct_change(5).iloc[-1])
+                volume_change = None if math.isnan(val) else val
+        except Exception as exc:
+            logger.warning("volume_change computation failed for %s: %s", ticker, exc)
+
+        # --- Factor 3: volatility (21-day rolling std — INVERTED before returning) ---
+        volatility: float | None = None
+        try:
+            close_series = history["Close"][ticker].dropna()
+            if len(close_series) >= 22:
+                log_returns = np.log(close_series / close_series.shift(1)).dropna()
+                vol_raw = float(log_returns.rolling(21).std(ddof=0).iloc[-1])
+                if not math.isnan(vol_raw):
+                    volatility = -1.0 * vol_raw  # INVERT: lower std = less risky = higher score
+        except Exception as exc:
+            logger.warning("volatility computation failed for %s: %s", ticker, exc)
+
+        # --- Factor 4: relative_strength (ticker return minus median of domain peers) ---
+        relative_strength: float | None = None
+        try:
+            stock_return_val = float(all_histories["Close"][ticker].pct_change(5).iloc[-1])
+            if not math.isnan(stock_return_val):
+                peer_returns = []
+                for peer in domain_tickers:
+                    try:
+                        r = float(all_histories["Close"][peer].pct_change(5).iloc[-1])
+                        if not math.isnan(r):
+                            peer_returns.append(r)
+                    except Exception:
+                        pass
+                if peer_returns:
+                    median_return = float(np.median(peer_returns))
+                    relative_strength = stock_return_val - median_return
+        except Exception as exc:
+            logger.warning("relative_strength computation failed for %s: %s", ticker, exc)
+
+        # --- Factor 5: financial_ratio (trailingPE — INVERTED before returning) ---
+        financial_ratio: float | None = None
+        try:
+            info = yf.Ticker(ticker).info
+            pe = info.get("trailingPE")  # .get() — NEVER dict-style access
+            if pe is not None:
+                financial_ratio = -1.0 * float(pe)  # INVERT: lower PE = cheaper = higher score
+        except Exception as exc:
+            logger.warning("financial_ratio computation failed for %s: %s", ticker, exc)
+
+        return {
+            "momentum": momentum,
+            "volume_change": volume_change,
+            "volatility": volatility,
+            "relative_strength": relative_strength,
+            "financial_ratio": financial_ratio,
+        }
+
+    except Exception as exc:
+        logger.warning("compute_factors_for_ticker failed entirely for %s: %s", ticker, exc)
+        return {
+            "momentum": None,
+            "volume_change": None,
+            "volatility": None,
+            "relative_strength": None,
+            "financial_ratio": None,
+        }
