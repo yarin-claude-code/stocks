@@ -43,7 +43,7 @@ Plans:
 **Goal:** Migrate every SQLite-specific concern to Supabase Postgres — asyncpg for async engine, psycopg2-binary for scheduler sync engine, remove WAL mode listener, update Alembic, update .env.
 **Depends on:** Phase 1
 **Requirements covered:** DATA-02
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 01.1-01-PLAN.md — Swap drivers, update config/database/scheduler, run Alembic migration to Supabase
