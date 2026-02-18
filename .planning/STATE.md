@@ -3,9 +3,9 @@
 ## Current Position
 
 Phase: 02 — Ranking Algorithm
-Plan: 1 (02-01-PLAN.md) — COMPLETE
-Status: Phase 02 in progress — 1/1 plans executed so far
-Last activity: 2026-02-18 — Plan 02-01 executed (ranking engine TDD)
+Plan: 2 (02-02-PLAN.md) — COMPLETE
+Status: Phase 02 complete — 2/2 plans executed
+Last activity: 2026-02-18 — Plan 02-02 executed (data fetcher extension + scheduler wiring)
 
 ## Accumulated Context
 
@@ -30,6 +30,9 @@ Last activity: 2026-02-18 — Plan 02-01 executed (ranking engine TDD)
 - **Supabase direct port 5432** — Not pgbouncer 6543; required for SQLAlchemy session mode compatibility
 - **epsilon tolerance (1e-12) for std==0 guard** — np.std of identical floats returns ~6.9e-18 not exactly 0.0; tolerance avoids incorrect Z-scores
 - **population std ddof=0** — Matches spec; Z-score normalization uses population (not sample) standard deviation
+- [Phase 02]: Pre-invert volatility and financial_ratio in compute_factors_for_ticker() so rank_domain() receives higher=better values
+- [Phase 02]: DOMAIN_GROUPS defined inside fetch_cycle() for Phase 2 — Phase 3 will replace with DB query
+- [Phase 02]: Second yf.download() in fetch_cycle() for factor computation — simpler than refactoring fetch_all_stocks()
 
 ## Performance Metrics
 
@@ -40,3 +43,5 @@ Last activity: 2026-02-18 — Plan 02-01 executed (ranking engine TDD)
 | 01    | 03   | 15min    | 2     | 5     |
 | 01.1  | 01   | 35min    | 3     | 7     |
 | 02    | 01   | 3min     | 2     | 2     |
+| 02    | 02   | 8min     | 2     | 2     |
+
