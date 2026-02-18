@@ -4,9 +4,11 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
+import yfinance as yf
 
 from .config import settings
-from .services.data_fetcher import fetch_all_stocks, SEED_TICKERS
+from .services.data_fetcher import fetch_all_stocks, compute_factors_for_ticker, SEED_TICKERS
+from .services.ranking_engine import rank_domain
 from .models.score_snapshot import ScoreSnapshot
 from .models.stock import Stock
 
@@ -41,6 +43,48 @@ def fetch_cycle() -> None:
                 stock.last_updated = now
         session.commit()
     logger.info("fetch_cycle: persisted %d tickers at %s", len(data), now.isoformat())
+
+    # --- Factor computation and ranking ---
+    # Domain groupings mirror SEED_TICKERS — hardcoded for Phase 2
+    # Phase 3 will read these from the DB
+    DOMAIN_GROUPS = {
+        "AI/Tech": ["AAPL", "MSFT", "NVDA", "AMD", "GOOGL"],
+        "EV":      ["TSLA", "RIVN"],
+        "Finance": ["JPM", "GS"],
+    }
+
+    # Download 30d history for factor computation (single batch call)
+    try:
+        all_tickers = [t for group in DOMAIN_GROUPS.values() for t in group]
+        history = yf.download(
+            all_tickers,
+            period="30d",
+            interval="1d",
+            auto_adjust=True,
+            progress=False,
+            threads=True,
+        )
+    except Exception as exc:
+        logger.error("Factor history download failed: %s", exc)
+        return
+
+    for domain_name, tickers in DOMAIN_GROUPS.items():
+        stocks_data: dict[str, dict] = {}
+        for ticker in tickers:
+            factors = compute_factors_for_ticker(
+                ticker=ticker,
+                history=history,
+                all_histories=history,
+                domain_tickers=tickers,
+            )
+            stocks_data[ticker] = factors
+
+        results = rank_domain(stocks_data)
+        for ticker, score in results.items():
+            logger.info(
+                "Domain=%s ticker=%s score=%.1f rank=%d",
+                domain_name, ticker, score.composite_score, score.rank,
+            )
 
 
 def create_scheduler() -> BackgroundScheduler:
