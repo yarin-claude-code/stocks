@@ -13,8 +13,7 @@ from .models.stock import Stock
 logger = logging.getLogger(__name__)
 
 # Sync engine for the scheduler thread (yfinance + DB writes are sync)
-_sync_db_url = settings.database_url.replace("sqlite+aiosqlite", "sqlite")
-_sync_engine = create_engine(_sync_db_url, connect_args={"check_same_thread": False})
+_sync_engine = create_engine(settings.sync_database_url)
 
 
 def fetch_cycle() -> None:
