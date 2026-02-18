@@ -69,7 +69,7 @@ Plans:
 
 **Research needed:** Yes — `/gsd:research-phase 2` for quantitative normalization best practices and factor weight selection methodologies
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 02-01-PLAN.md — TDD: pure ranking engine (normalize, weight, scale, rank) with 6 edge-case tests
@@ -157,8 +157,7 @@ Plans:
 | DATA-03 | 1 |
 | DATA-04 | 1 |
 | DATA-05 | 1 |
-| ALGO-01 | 2 |
-| ALGO-02 | 2 |
+| ALGO-01 | 2 | 1/2 | In Progress|  |
 | ALGO-03 | 2 |
 | ALGO-04 | 2 |
 | ALGO-05 | 2 |

@@ -2,10 +2,10 @@
 
 ## Current Position
 
-Phase: 01.1 — SQLite to Supabase Postgres Migration
-Plan: 1 (01.1-01-PLAN.md) — COMPLETE
-Status: Phase 01.1 complete — all 1 plan executed
-Last activity: 2026-02-18 — Plan 01.1-01 executed (SQLite to Supabase Postgres migration)
+Phase: 02 — Ranking Algorithm
+Plan: 1 (02-01-PLAN.md) — COMPLETE
+Status: Phase 02 in progress — 1/1 plans executed so far
+Last activity: 2026-02-18 — Plan 02-01 executed (ranking engine TDD)
 
 ## Accumulated Context
 
@@ -28,6 +28,8 @@ Last activity: 2026-02-18 — Plan 01.1-01 executed (SQLite to Supabase Postgres
 - **sync_database_url property on Settings** — Derives psycopg2 URL from asyncpg URL; single source of truth
 - **Alembic URL via config.set_main_option** — configparser %(VAR)s interpolation cannot read env vars; inject programmatically in env.py after load_dotenv()
 - **Supabase direct port 5432** — Not pgbouncer 6543; required for SQLAlchemy session mode compatibility
+- **epsilon tolerance (1e-12) for std==0 guard** — np.std of identical floats returns ~6.9e-18 not exactly 0.0; tolerance avoids incorrect Z-scores
+- **population std ddof=0** — Matches spec; Z-score normalization uses population (not sample) standard deviation
 
 ## Performance Metrics
 
@@ -37,3 +39,4 @@ Last activity: 2026-02-18 — Plan 01.1-01 executed (SQLite to Supabase Postgres
 | 01    | 02   | 15min    | 2     | 4     |
 | 01    | 03   | 15min    | 2     | 5     |
 | 01.1  | 01   | 35min    | 3     | 7     |
+| 02    | 01   | 3min     | 2     | 2     |

@@ -17,12 +17,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Ranking Algorithm
 
-- [ ] **ALGO-01**: App calculates composite score using 5 factors: price momentum, volume change, volatility, sector relative strength, financial ratios
-- [ ] **ALGO-02**: App normalizes all factors via z-score normalization with outlier capping (±3 std dev)
-- [ ] **ALGO-03**: App produces a single weighted score (0-100 scale) per stock
+- [x] **ALGO-01**: App calculates composite score using 5 factors: price momentum, volume change, volatility, sector relative strength, financial ratios
+- [x] **ALGO-02**: App normalizes all factors via z-score normalization with outlier capping (±3 std dev)
+- [x] **ALGO-03**: App produces a single weighted score (0-100 scale) per stock
 - [ ] **ALGO-04**: App displays the top 5 ranked stocks per selected domain
-- [ ] **ALGO-05**: App displays a single "Best Overall Investment Today" across all domains
-- [ ] **ALGO-06**: App shows mathematical breakdown of how each stock's score was computed (per-factor contribution)
+- [x] **ALGO-05**: App displays a single "Best Overall Investment Today" across all domains
+- [x] **ALGO-06**: App shows mathematical breakdown of how each stock's score was computed (per-factor contribution)
 
 ### Domain System
 
@@ -88,12 +88,12 @@ Deferred to future release. Tracked but not in current roadmap.
 | DATA-03 | Phase 1 | Pending |
 | DATA-04 | Phase 1 | Pending |
 | DATA-05 | Phase 1 | Pending |
-| ALGO-01 | Phase 2 | Pending |
-| ALGO-02 | Phase 2 | Pending |
-| ALGO-03 | Phase 2 | Pending |
+| ALGO-01 | Phase 2 | Complete |
+| ALGO-02 | Phase 2 | Complete |
+| ALGO-03 | Phase 2 | Complete |
 | ALGO-04 | Phase 2 | Pending |
-| ALGO-05 | Phase 2 | Pending |
-| ALGO-06 | Phase 2 | Pending |
+| ALGO-05 | Phase 2 | Complete |
+| ALGO-06 | Phase 2 | Complete |
 | DOM-01 | Phase 3 | Pending |
 | DOM-02 | Phase 3 | Pending |
 | DOM-03 | Phase 5 | Pending |
