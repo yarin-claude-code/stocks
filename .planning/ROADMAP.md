@@ -23,10 +23,10 @@ Pure scoring engine — normalize, weight, scale, rank.
 FastAPI routes + React dashboard showing ranked stocks.
 - Routes: `/rankings`, `/rankings/{domain}`, `/domains`, `/health`
 - Components: DomainSelector, StockCard, ScoreBreakdown, BestOverall
-- **Plans:** 1/4 complete
+- **Plans:** 3/4 complete
   - [x] 03-01-PLAN.md — RankingResult model + Alembic migration + seed expansion + fetch_cycle DB persistence
-  - [ ] 03-02-PLAN.md — FastAPI routes (/api/domains, /api/rankings, /api/rankings/{domain}) + CORS
-  - [ ] 03-03-PLAN.md — React frontend scaffold + all dashboard components
+  - [x] 03-02-PLAN.md — FastAPI routes (/api/domains, /api/rankings, /api/rankings/{domain}) + CORS
+  - [x] 03-03-PLAN.md — React frontend scaffold + all dashboard components
   - [ ] 03-04-PLAN.md — Human verification of full dashboard UI
 
 ## Phase 4: Authentication & Personalization

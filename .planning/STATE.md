@@ -4,9 +4,9 @@
 
 Phase: 03 — API & Dashboard
 Plan: 3/3
-Status: In progress — Plan 03-02 complete
-Last activity: 2026-02-20 — Plan 03-02 executed
-Stopped at: Completed 03-02-PLAN.md
+Status: Phase 03 complete
+Last activity: 2026-02-20 — Plan 03-03 executed
+Stopped at: Completed 03-03-PLAN.md
 
 ## Key Decisions
 
@@ -26,6 +26,8 @@ Stopped at: Completed 03-02-PLAN.md
 | Raw factor values in DB | RankingResult stores raw (not normalized) factor values |
 | scalar_subquery for latest computed_at | Single query, DB computes max — used in /api/rankings |
 | 404 for unknown domain | GET /api/rankings/{domain} returns 404 when domain missing or empty |
+| Tailwind v4 no-config | @tailwindcss/vite plugin — @import "tailwindcss" only, no tailwind.config.js |
+| StockRanking shared type | Defined in BestOverall.tsx, re-exported for StockCard/ScoreBreakdown |
 
 ## Performance
 
@@ -39,3 +41,4 @@ Stopped at: Completed 03-02-PLAN.md
 | 02 | 02 | 8min | 2 |
 | 03 | 01 | 20min | 5 |
 | 03 | 02 | 15min | 3 |
+| 03 | 03 | 15min | 11 |
