@@ -16,7 +16,20 @@ import yfinance as yf
 
 logger = logging.getLogger(__name__)
 
-SEED_TICKERS = ["AAPL", "MSFT", "NVDA", "AMD", "GOOGL", "TSLA", "RIVN", "JPM", "GS"]
+SEED_TICKERS = [
+    "AAPL", "MSFT", "NVDA", "AMD", "GOOGL",
+    "TSLA", "RIVN", "NIO", "LCID",
+    "JPM", "GS", "BAC", "MS",
+    "JNJ", "UNH", "PFE", "ABBV",
+    "XOM", "CVX", "COP", "SLB",
+    "AMZN", "WMT", "HD", "MCD",
+    "TSM", "INTC", "QCOM", "AVGO",
+    "LMT", "RTX", "NOC", "GD",
+    "COIN", "PYPL", "SQ", "HOOD",
+    "CAT", "DE", "HON", "UPS",
+    "NFLX", "DIS", "SPOT", "PARA",
+    "AMT", "PLD", "EQIX", "SPG",
+]
 
 
 def validate_ticker_data(ticker: str, close: float, volume: float) -> bool:

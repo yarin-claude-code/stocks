@@ -6,21 +6,18 @@ from .models.stock import Stock, Domain
 logger = logging.getLogger(__name__)
 
 SEED_DATA = {
-    "AI/Tech": [
-        ("AAPL", "Apple Inc."),
-        ("MSFT", "Microsoft Corp."),
-        ("NVDA", "NVIDIA Corp."),
-        ("AMD", "Advanced Micro Devices"),
-        ("GOOGL", "Alphabet Inc."),
-    ],
-    "EV": [
-        ("TSLA", "Tesla Inc."),
-        ("RIVN", "Rivian Automotive"),
-    ],
-    "Finance": [
-        ("JPM", "JPMorgan Chase"),
-        ("GS", "Goldman Sachs"),
-    ],
+    "AI/Tech":          [("AAPL","Apple Inc."),("MSFT","Microsoft Corp."),("NVDA","NVIDIA Corp."),("AMD","Advanced Micro Devices"),("GOOGL","Alphabet Inc.")],
+    "EV":               [("TSLA","Tesla Inc."),("RIVN","Rivian Automotive"),("NIO","NIO Inc."),("LCID","Lucid Group")],
+    "Finance":          [("JPM","JPMorgan Chase"),("GS","Goldman Sachs"),("BAC","Bank of America"),("MS","Morgan Stanley")],
+    "Healthcare":       [("JNJ","Johnson & Johnson"),("UNH","UnitedHealth Group"),("PFE","Pfizer Inc."),("ABBV","AbbVie Inc.")],
+    "Energy":           [("XOM","Exxon Mobil"),("CVX","Chevron Corp."),("COP","ConocoPhillips"),("SLB","SLB (Schlumberger)")],
+    "Consumer":         [("AMZN","Amazon.com Inc."),("WMT","Walmart Inc."),("HD","Home Depot"),("MCD","McDonald's Corp.")],
+    "Semiconductors":   [("TSM","Taiwan Semiconductor"),("INTC","Intel Corp."),("QCOM","Qualcomm Inc."),("AVGO","Broadcom Inc.")],
+    "Defense":          [("LMT","Lockheed Martin"),("RTX","RTX Corp."),("NOC","Northrop Grumman"),("GD","General Dynamics")],
+    "Crypto/Fintech":   [("COIN","Coinbase Global"),("PYPL","PayPal Holdings"),("SQ","Block Inc."),("HOOD","Robinhood Markets")],
+    "Industrials":      [("CAT","Caterpillar Inc."),("DE","Deere & Company"),("HON","Honeywell Intl."),("UPS","United Parcel Service")],
+    "Media/Streaming":  [("NFLX","Netflix Inc."),("DIS","Walt Disney Co."),("SPOT","Spotify Technology"),("PARA","Paramount Global")],
+    "Real Estate":      [("AMT","American Tower"),("PLD","Prologis Inc."),("EQIX","Equinix Inc."),("SPG","Simon Property Group")],
 }
 
 
