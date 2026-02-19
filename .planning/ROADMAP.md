@@ -1,7 +1,7 @@
 # Roadmap: Smart Stock Ranker v1.0
 
 **Stack:** FastAPI + React + Supabase Postgres + yfinance
-**Created:** 2026-02-17 | **Updated:** 2026-02-18
+**Created:** 2026-02-17 | **Updated:** 2026-02-20
 
 ---
 
@@ -23,7 +23,11 @@ Pure scoring engine — normalize, weight, scale, rank.
 FastAPI routes + React dashboard showing ranked stocks.
 - Routes: `/rankings`, `/rankings/{domain}`, `/domains`, `/health`
 - Components: DomainSelector, StockCard, ScoreBreakdown, BestOverall
-- Plans: TBD
+- **Plans:** 4 plans
+  - [ ] 03-01-PLAN.md — RankingResult model + Alembic migration + seed expansion + fetch_cycle DB persistence
+  - [ ] 03-02-PLAN.md — FastAPI routes (/api/domains, /api/rankings, /api/rankings/{domain}) + CORS
+  - [ ] 03-03-PLAN.md — React frontend scaffold + all dashboard components
+  - [ ] 03-04-PLAN.md — Human verification of full dashboard UI
 
 ## Phase 4: Authentication & Personalization
 User accounts with saved domain preferences via Supabase Auth.
@@ -48,4 +52,4 @@ Daily score snapshots, trend charts, user-defined domains with ticker validation
 | AUTH-01–04 | 4 |
 | HIST-01–03 | 5 |
 
-*Updated: 2026-02-18*
+*Updated: 2026-02-20*
