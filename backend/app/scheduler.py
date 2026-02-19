@@ -120,5 +120,6 @@ def create_scheduler() -> BackgroundScheduler:
         id="data_fetch",
         replace_existing=True,
         max_instances=1,  # Prevents overlapping runs if a fetch takes longer than the interval
+        next_run_time=datetime.now(timezone.utc),  # Fire immediately on startup
     )
     return scheduler
