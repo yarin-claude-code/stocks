@@ -2,9 +2,11 @@
 
 ## Current Position
 
-Phase: 02 — Ranking Algorithm
-Status: Phase 02 complete — 2/2 plans executed
-Last activity: 2026-02-18 — Plan 02-02 executed
+Phase: 03 — API & Dashboard
+Plan: 2/3
+Status: In progress — Plan 03-01 complete
+Last activity: 2026-02-20 — Plan 03-01 executed
+Stopped at: Completed 03-01-PLAN.md
 
 ## Key Decisions
 
@@ -20,8 +22,8 @@ Last activity: 2026-02-18 — Plan 02-02 executed
 | epsilon guard (1e-12) | np.std of identical floats returns ~6.9e-18, not exactly 0 |
 | ddof=0 | Population std for Z-score normalization |
 | Pre-invert volatility/PE | Inverted in compute_factors_for_ticker() before rank_domain() |
-| DOMAIN_GROUPS in fetch_cycle() | Hardcoded for Phase 2 — Phase 3 replaces with DB query |
-| Second yf.download() in fetch_cycle() | Simpler than refactoring fetch_all_stocks() |
+| DOMAIN_GROUPS removed | Phase 3 reads domains from DB via selectinload(Domain.stocks) |
+| Raw factor values in DB | RankingResult stores raw (not normalized) factor values |
 
 ## Performance
 
@@ -33,3 +35,4 @@ Last activity: 2026-02-18 — Plan 02-02 executed
 | 01.1 | 01 | 35min | 7 |
 | 02 | 01 | 3min | 2 |
 | 02 | 02 | 8min | 2 |
+| 03 | 01 | 20min | 5 |
