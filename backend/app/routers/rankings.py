@@ -23,6 +23,7 @@ class StockRanking(BaseModel):
     composite_score: float
     rank: int
     factors: FactorBreakdown
+    long_term_score: float | None
     computed_at: datetime
 
 
@@ -49,6 +50,7 @@ def _row_to_stock_ranking(row: RankingResult) -> StockRanking:
             relative_strength=row.relative_strength,
             financial_ratio=row.financial_ratio,
         ),
+        long_term_score=row.long_term_score,
         computed_at=row.computed_at,
     )
 

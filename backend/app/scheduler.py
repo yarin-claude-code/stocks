@@ -8,7 +8,7 @@ import yfinance as yf
 
 from sqlalchemy.orm import selectinload
 from .config import settings
-from .services.data_fetcher import fetch_all_stocks, compute_factors_for_ticker, SEED_TICKERS
+from .services.data_fetcher import fetch_all_stocks, compute_factors_for_ticker, compute_long_term_score, SEED_TICKERS
 from .services.ranking_engine import rank_domain
 from .models.score_snapshot import ScoreSnapshot
 from .models.stock import Stock, Domain
@@ -104,6 +104,7 @@ def fetch_cycle() -> None:
                     volatility=fs["volatility"].raw if "volatility" in fs else None,
                     relative_strength=fs["relative_strength"].raw if "relative_strength" in fs else None,
                     financial_ratio=fs["financial_ratio"].raw if "financial_ratio" in fs else None,
+                    long_term_score=compute_long_term_score(ticker),
                     computed_at=now_computed,
                 ))
                 ranking_count += 1
