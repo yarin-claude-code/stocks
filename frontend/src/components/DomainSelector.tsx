@@ -7,8 +7,11 @@ export function DomainSelector({ domains, active, onSelect }: {
         <button
           key={d}
           onClick={() => onSelect(d)}
-          className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors
-            ${active === d ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
+            d === active
+              ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/20'
+              : 'bg-slate-800 border-slate-700 text-slate-300 hover:border-indigo-500/50 hover:text-white'
+          }`}
         >
           {d}
         </button>

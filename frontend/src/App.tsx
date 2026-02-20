@@ -25,23 +25,34 @@ export default function App() {
   const currentStocks = domains.find((d: any) => d.domain === currentDomain)?.top5 ?? []
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Smart Stock Ranker</h1>
-          {!isMarketOpen() && (
-            <span className="text-xs font-medium bg-amber-100 text-amber-700 px-3 py-1 rounded-full">
-              Market Closed
-            </span>
-          )}
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-2xl font-bold text-white tracking-tight">Smart Stock Ranker</h1>
+            <p className="text-xs text-slate-500 mt-0.5">Quantitative ranking · refreshes every 5 min</p>
+          </div>
+          <div className="flex items-center gap-3">
+            {isMarketOpen() ? (
+              <span className="flex items-center gap-1.5 text-xs font-medium text-green-400 bg-green-500/10 border border-green-500/20 px-3 py-1 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                Market Open
+              </span>
+            ) : (
+              <span className="text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 px-3 py-1 rounded-full">
+                Market Closed
+              </span>
+            )}
+          </div>
         </div>
 
         {isLoading ? (
           <>
-            <Skeleton className="h-20 w-full mb-6" />
-            <div className="flex gap-2 mb-6">{[...Array(5)].map((_, i) => <Skeleton key={i} className="h-8 w-24" />)}</div>
+            <Skeleton className="h-24 w-full mb-6" />
+            <div className="flex gap-2 mb-6">{[...Array(5)].map((_, i) => <Skeleton key={i} className="h-9 w-24" />)}</div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+              {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-48" />)}
             </div>
           </>
         ) : (
