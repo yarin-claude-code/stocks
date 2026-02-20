@@ -41,7 +41,7 @@ User accounts with saved domain preferences via Supabase Auth.
 
 ## Phase 5: Historical Tracking & Custom Domains
 Daily score snapshots, trend charts, user-defined domains with ticker validation.
-- **Plans:** 5 plans
+- **Plans:** 3/5 plans executed
   - [ ] 05-01-PLAN.md — DailySnapshot model + Alembic migration + snapshot_job + compute_trend
   - [ ] 05-02-PLAN.md — user_domains/user_domain_tickers models + migration + RLS + CRUD routes
   - [ ] 05-03-PLAN.md — GET /api/history/{ticker} + ScoreHistoryChart + TrendBadge + /history/:ticker route
@@ -66,8 +66,7 @@ Plans:
 | DATA-01–05 | 1, 01.1 |
 | ALGO-01–06 | 2 ✓ |
 | DOM-01–02 | 3 |
-| DOM-03–04 | 5 |
-| UI-01–05 | 3 |
+| DOM-03–04 | 5 | 3/5 | In Progress|  |
 | AUTH-01–04 | 4 | 3/5 | In Progress|  |
 
 *Updated: 2026-02-20*

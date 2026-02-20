@@ -3,10 +3,10 @@
 ## Current Position
 
 Phase: 05 — Historical Tracking & Custom Domains
-Plan: 2/2
-Status: Phase 05 plans 01-02 complete ✓
-Last activity: 2026-02-21 — custom domains CRUD + RLS (05-02)
-Stopped at: Completed 05-02-PLAN.md
+Plan: 3/3
+Status: Phase 05 complete ✓
+Last activity: 2026-02-21 — history API + chart (05-03)
+Stopped at: Completed 05-03-PLAN.md
 
 ## Key Decisions
 
@@ -35,6 +35,8 @@ Stopped at: Completed 05-02-PLAN.md
 | Raw SQL Alembic migration for auth.users FK | Supabase auth schema not in SQLAlchemy metadata |
 | usePreferences hook encapsulates domain preference GET/PUT logic | Clean separation, dashboard just calls saveDomains |
 | 05_02 migration chained after 05_01_daily_snapshots | Fixed multiple-head conflict; linear migration graph |
+| HistoryPage under /_authenticated layout | History is user-facing, requires login |
+| StockCard history link uses stopPropagation | Prevents triggering breakdown modal when clicking history link |
 
 ## Accumulated Context
 
@@ -60,3 +62,4 @@ Stopped at: Completed 05-02-PLAN.md
 | 04 | 04 | 8min | 3 |
 | 05 | 01 | 15min | 4 |
 | 05 | 02 | 15min | 4 |
+| 05 | 03 | 10min | 6 |
