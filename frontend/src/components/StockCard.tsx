@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import type { StockRanking } from './BestOverall'
 
 function gradeColor(score: number) {
@@ -75,7 +76,17 @@ export function StockCard({ stock, onClick }: { stock: StockRanking; onClick: ()
         {stock.factors.relative_strength != null && <FactorBar label="Sector Strength" value={stock.factors.relative_strength} />}
       </div>
 
-      <p className="text-xs text-slate-600 mt-3 text-right">Click for full breakdown →</p>
+      <div className="flex justify-between items-center mt-3">
+        <Link
+          to="/history/$ticker"
+          params={{ ticker: stock.ticker }}
+          onClick={(e) => e.stopPropagation()}
+          className="text-xs text-indigo-400 hover:text-indigo-300"
+        >
+          View history →
+        </Link>
+        <p className="text-xs text-slate-600">Click for full breakdown →</p>
+      </div>
     </button>
   )
 }
