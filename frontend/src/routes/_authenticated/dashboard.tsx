@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchRankings } from '../../api/client'
 import { isMarketOpen } from '../../hooks/useMarketOpen'
@@ -110,6 +110,12 @@ function Dashboard() {
                   >
                     Logout
                   </button>
+                  <Link
+                    to="/domains/custom"
+                    className="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
+                  >
+                    My Domains
+                  </Link>
                 </div>
               )}
             </div>
