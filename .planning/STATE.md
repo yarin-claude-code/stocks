@@ -3,10 +3,10 @@
 ## Current Position
 
 Phase: 04 — Authentication & Personalization
-Plan: 3/3
-Status: Phase 04 plan 02 complete
-Last activity: 2026-02-20 — Plan 04-02 executed
-Stopped at: Completed 04-02-PLAN.md
+Plan: 4/4
+Status: Phase 04 plan 04 complete
+Last activity: 2026-02-20 — Plan 04-04 executed
+Stopped at: Completed 04-04-PLAN.md
 
 ## Key Decisions
 
@@ -33,6 +33,7 @@ Stopped at: Completed 04-02-PLAN.md
 | Logout window.location.href | Forces full page reload after signOut to clear React state |
 | Split op.execute() per SQL statement | asyncpg rejects multi-command prepared statements |
 | Raw SQL Alembic migration for auth.users FK | Supabase auth schema not in SQLAlchemy metadata |
+| usePreferences hook encapsulates domain preference GET/PUT logic | Clean separation, dashboard just calls saveDomains |
 
 ## Performance
 
@@ -50,3 +51,4 @@ Stopped at: Completed 04-02-PLAN.md
 | 04 | 01 | 4min | 6 |
 | 04 | 02 | 5min | 2 |
 | 04 | 03 | 15min | 9 |
+| 04 | 04 | 8min | 3 |
