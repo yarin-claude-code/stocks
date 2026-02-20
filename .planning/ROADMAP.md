@@ -33,7 +33,7 @@ FastAPI routes + React dashboard showing ranked stocks.
 User accounts with saved domain preferences via Supabase Auth.
 - `supabase-auth` package (NOT gotrue — deprecated Aug 2025)
 - **Plans:** 1/5 plans executed
-  - [ ] 04-01-PLAN.md — Backend config + get_current_user dependency + user_preferences migration + CORS update
+  - [x] 04-01-PLAN.md — Backend config + get_current_user dependency + user_preferences migration + CORS update
   - [ ] 04-02-PLAN.md — GET/PUT /api/preferences router
   - [ ] 04-03-PLAN.md — TanStack Router + Supabase client + login/register pages + protected dashboard
   - [ ] 04-04-PLAN.md — Load/save domain preferences on login and domain change
