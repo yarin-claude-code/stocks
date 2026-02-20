@@ -1,9 +1,14 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
 from .seed import seed_db
 from .scheduler import create_scheduler
 from .routers.health import router as health_router
+from .routers.rankings import router as rankings_router
+from .routers.domains import router as domains_router
+from .routers.preferences import router as preferences_router
+from .routers.auth import router as auth_router
 
 _scheduler = None
 
@@ -27,7 +32,17 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Smart Stock Ranker", lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["GET", "PUT", "POST"],
+    allow_headers=["*"],
+)
 app.include_router(health_router)
+app.include_router(rankings_router)
+app.include_router(domains_router)
+app.include_router(preferences_router)
+app.include_router(auth_router)
 
 
 @app.get("/")
