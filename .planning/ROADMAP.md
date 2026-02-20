@@ -41,11 +41,11 @@ User accounts with saved domain preferences via Supabase Auth.
 
 ## Phase 5: Historical Tracking & Custom Domains
 Daily score snapshots, trend charts, user-defined domains with ticker validation.
-- **Plans:** 3/5 plans executed
-  - [ ] 05-01-PLAN.md — DailySnapshot model + Alembic migration + snapshot_job + compute_trend
-  - [ ] 05-02-PLAN.md — user_domains/user_domain_tickers models + migration + RLS + CRUD routes
-  - [ ] 05-03-PLAN.md — GET /api/history/{ticker} + ScoreHistoryChart + TrendBadge + /history/:ticker route
-  - [ ] 05-04-PLAN.md — CustomDomainManager UI + /domains/custom route
+- **Plans:** 4/5 plans executed
+  - [x] 05-01-PLAN.md — DailySnapshot model + Alembic migration + snapshot_job + compute_trend
+  - [x] 05-02-PLAN.md — user_domains/user_domain_tickers models + migration + RLS + CRUD routes
+  - [x] 05-03-PLAN.md — GET /api/history/{ticker} + ScoreHistoryChart + TrendBadge + /history/:ticker route
+  - [x] 05-04-PLAN.md — CustomDomainManager UI + /domains/custom route
   - [ ] 05-05-PLAN.md — Human verification of all Phase 5 features
 
 ### Phase 6: DevOps — CI/CD pipeline, Docker containerization, GitHub Actions, deployment configuration

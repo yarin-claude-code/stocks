@@ -3,10 +3,10 @@
 ## Current Position
 
 Phase: 05 — Historical Tracking & Custom Domains
-Plan: 3/3
+Plan: 4/4
 Status: Phase 05 complete ✓
-Last activity: 2026-02-21 — history API + chart (05-03)
-Stopped at: Completed 05-03-PLAN.md
+Last activity: 2026-02-21 — custom domain manager frontend (05-04)
+Stopped at: Completed 05-04-PLAN.md
 
 ## Key Decisions
 
@@ -37,6 +37,8 @@ Stopped at: Completed 05-03-PLAN.md
 | 05_02 migration chained after 05_01_daily_snapshots | Fixed multiple-head conflict; linear migration graph |
 | HistoryPage under /_authenticated layout | History is user-facing, requires login |
 | StockCard history link uses stopPropagation | Prevents triggering breakdown modal when clicking history link |
+| domains.custom.tsx file-based route | TanStack Router file-based pattern; `router.tsx` in plan frontmatter was incorrect |
+| My Domains nav in user menu dropdown | No sidebar/navbar; user menu is the only nav surface |
 
 ## Accumulated Context
 
@@ -63,3 +65,4 @@ Stopped at: Completed 05-03-PLAN.md
 | 05 | 01 | 15min | 4 |
 | 05 | 02 | 15min | 4 |
 | 05 | 03 | 10min | 6 |
+| 05 | 04 | 10min | 3 |
