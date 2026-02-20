@@ -32,7 +32,7 @@ FastAPI routes + React dashboard showing ranked stocks.
 ## Phase 4: Authentication & Personalization
 User accounts with saved domain preferences via Supabase Auth.
 - `supabase-auth` package (NOT gotrue — deprecated Aug 2025)
-- **Plans:** 1/5 plans executed
+- **Plans:** 3/5 plans executed
   - [x] 04-01-PLAN.md — Backend config + get_current_user dependency + user_preferences migration + CORS update
   - [ ] 04-02-PLAN.md — GET/PUT /api/preferences router
   - [ ] 04-03-PLAN.md — TanStack Router + Supabase client + login/register pages + protected dashboard
@@ -59,6 +59,6 @@ Daily score snapshots, trend charts, user-defined domains with ticker validation
 | DOM-01–02 | 3 |
 | DOM-03–04 | 5 |
 | UI-01–05 | 3 |
-| AUTH-01–04 | 4 | 1/5 | In Progress|  |
+| AUTH-01–04 | 4 | 3/5 | In Progress|  |
 
 *Updated: 2026-02-20*
