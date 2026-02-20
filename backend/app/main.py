@@ -9,6 +9,7 @@ from .routers.rankings import router as rankings_router
 from .routers.domains import router as domains_router
 from .routers.preferences import router as preferences_router
 from .routers.auth import router as auth_router
+from .routers.custom_domains import router as custom_domains_router
 
 _scheduler = None
 
@@ -35,7 +36,7 @@ app = FastAPI(title="Smart Stock Ranker", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
-    allow_methods=["GET", "PUT", "POST"],
+    allow_methods=["GET", "PUT", "POST", "DELETE"],
     allow_headers=["*"],
 )
 app.include_router(health_router)
@@ -43,6 +44,7 @@ app.include_router(rankings_router)
 app.include_router(domains_router)
 app.include_router(preferences_router)
 app.include_router(auth_router)
+app.include_router(custom_domains_router)
 
 
 @app.get("/")
