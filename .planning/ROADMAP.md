@@ -48,6 +48,15 @@ Daily score snapshots, trend charts, user-defined domains with ticker validation
   - [ ] 05-04-PLAN.md — CustomDomainManager UI + /domains/custom route
   - [ ] 05-05-PLAN.md — Human verification of all Phase 5 features
 
+### Phase 6: DevOps — CI/CD pipeline, Docker containerization, GitHub Actions, deployment configuration
+
+**Goal:** [To be planned]
+**Depends on:** Phase 5
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 6 to break down)
+
 ---
 
 ## Requirement Coverage: 27/27 ✓

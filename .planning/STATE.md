@@ -35,6 +35,11 @@ Stopped at: Phase 04 fully verified
 | Raw SQL Alembic migration for auth.users FK | Supabase auth schema not in SQLAlchemy metadata |
 | usePreferences hook encapsulates domain preference GET/PUT logic | Clean separation, dashboard just calls saveDomains |
 
+## Accumulated Context
+
+### Roadmap Evolution
+- Phase 6 added: DevOps — CI/CD pipeline, Docker containerization, GitHub Actions, deployment configuration
+
 ## Performance
 
 | Phase | Plan | Duration | Files |
