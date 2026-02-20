@@ -10,6 +10,7 @@ from .routers.domains import router as domains_router
 from .routers.preferences import router as preferences_router
 from .routers.auth import router as auth_router
 from .routers.custom_domains import router as custom_domains_router
+from .routers.history import router as history_router
 
 _scheduler = None
 
@@ -45,6 +46,7 @@ app.include_router(domains_router)
 app.include_router(preferences_router)
 app.include_router(auth_router)
 app.include_router(custom_domains_router)
+app.include_router(history_router, prefix="/api")
 
 
 @app.get("/")
