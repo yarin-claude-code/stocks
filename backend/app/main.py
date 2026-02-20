@@ -33,7 +33,7 @@ app = FastAPI(title="Smart Stock Ranker", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
-    allow_methods=["GET"],
+    allow_methods=["GET", "PUT"],
     allow_headers=["*"],
 )
 app.include_router(health_router)
