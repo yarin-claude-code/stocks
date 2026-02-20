@@ -1,0 +1,29 @@
+{
+  "enabledPlugins": {
+    "supabase@claude-plugins-official": true
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd C:/claude-projects/investment-project/backend && python -m pytest tests/ -v --tb=short 2>&1 | tail -20"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -Command \"Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Claude Code needs your attention', 'Claude Code')\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
