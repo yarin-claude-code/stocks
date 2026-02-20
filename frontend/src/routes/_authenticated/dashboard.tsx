@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchRankings } from '../../api/client'
@@ -26,11 +26,24 @@ function Dashboard() {
   const [activeDomain, setActiveDomain] = useState<string | null>(null)
   const [selectedStock, setSelectedStock] = useState<any>(null)
   const [session, setSession] = useState<any>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
   const { savedDomains, loading: prefLoading, saveDomains } = usePreferences()
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
   }, [])
+
+  useEffect(() => {
+    if (!menuOpen) return
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [menuOpen])
 
   useEffect(() => {
     if (!prefLoading && savedDomains !== null && savedDomains.length === 0 && currentDomain) {
@@ -79,21 +92,26 @@ function Dashboard() {
                 Market Closed
               </span>
             )}
-            <div className="relative group">
-              <button className="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full">
+            <div className="relative" ref={menuRef}>
+              <button
+                className="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full"
+                onClick={() => setMenuOpen(o => !o)}
+              >
                 {displayName}
               </button>
-              <div className="absolute right-0 mt-1 hidden group-hover:block bg-slate-900 border border-slate-800 rounded shadow-lg z-10">
-                <button
-                  className="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
-                  onClick={async () => {
-                    await supabase.auth.signOut()
-                    window.location.href = '/login'
-                  }}
-                >
-                  Logout
-                </button>
-              </div>
+              {menuOpen && (
+                <div className="absolute right-0 mt-1 bg-slate-900 border border-slate-800 rounded shadow-lg z-10">
+                  <button
+                    className="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
+                    onClick={async () => {
+                      await supabase.auth.signOut()
+                      window.location.href = '/login'
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
