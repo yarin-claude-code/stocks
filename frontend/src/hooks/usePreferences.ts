@@ -1,8 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
-
 async function getAuthHeader(): Promise<Record<string, string>> {
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) return {}
@@ -18,7 +16,7 @@ export function usePreferences() {
     getAuthHeader().then(async headers => {
       if (!headers.Authorization) { setLoading(false); return }
       try {
-        const res = await fetch(`${API_BASE}/api/preferences`, { headers })
+        const res = await fetch('/api/preferences', { headers })
         if (!res.ok) throw new Error('fetch failed')
         const data = await res.json()
         if (!cancelled) setSavedDomains(data.domains ?? [])
@@ -34,7 +32,7 @@ export function usePreferences() {
   const saveDomains = useCallback(async (domains: string[]) => {
     const headers = await getAuthHeader()
     if (!headers.Authorization) return
-    await fetch(`${API_BASE}/api/preferences`, {
+    await fetch('/api/preferences', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', ...headers },
       body: JSON.stringify({ domains }),

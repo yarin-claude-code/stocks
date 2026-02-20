@@ -14,9 +14,9 @@ SEED_DATA = {
     "Consumer":         [("AMZN","Amazon.com Inc."),("WMT","Walmart Inc."),("HD","Home Depot"),("MCD","McDonald's Corp.")],
     "Semiconductors":   [("TSM","Taiwan Semiconductor"),("INTC","Intel Corp."),("QCOM","Qualcomm Inc."),("AVGO","Broadcom Inc.")],
     "Defense":          [("LMT","Lockheed Martin"),("RTX","RTX Corp."),("NOC","Northrop Grumman"),("GD","General Dynamics")],
-    "Crypto/Fintech":   [("COIN","Coinbase Global"),("PYPL","PayPal Holdings"),("SQ","Block Inc."),("HOOD","Robinhood Markets")],
+    "Crypto/Fintech":   [("COIN","Coinbase Global"),("PYPL","PayPal Holdings"),("V","Visa Inc."),("HOOD","Robinhood Markets")],
     "Industrials":      [("CAT","Caterpillar Inc."),("DE","Deere & Company"),("HON","Honeywell Intl."),("UPS","United Parcel Service")],
-    "Media/Streaming":  [("NFLX","Netflix Inc."),("DIS","Walt Disney Co."),("SPOT","Spotify Technology"),("PARA","Paramount Global")],
+    "Media/Streaming":  [("NFLX","Netflix Inc."),("DIS","Walt Disney Co."),("SPOT","Spotify Technology"),("WBD","Warner Bros. Discovery")],
     "Real Estate":      [("AMT","American Tower"),("PLD","Prologis Inc."),("EQIX","Equinix Inc."),("SPG","Simon Property Group")],
 }
 

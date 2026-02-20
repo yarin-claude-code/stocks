@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase'
 export const Route = createFileRoute('/login')({
   beforeLoad: async () => {
     const { data: { session } } = await supabase.auth.getSession()
-    if (session) throw redirect({ to: '/_authenticated/dashboard' })
+    if (session) throw redirect({ to: '/dashboard' })
   },
   component: LoginPage,
 })
@@ -35,7 +35,7 @@ function LoginPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
       }
-      navigate({ to: '/_authenticated/dashboard' })
+      navigate({ to: '/dashboard' })
     } catch (err: any) {
       setError(err.message ?? 'An error occurred')
     } finally {
