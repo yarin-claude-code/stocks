@@ -2,11 +2,11 @@
 
 ## Current Position
 
-Phase: 04 — Authentication & Personalization
-Plan: 5/5
-Status: Phase 04 complete ✓
-Last activity: 2026-02-21 — UAT passed (04-05)
-Stopped at: Phase 04 fully verified
+Phase: 05 — Historical Tracking & Custom Domains
+Plan: 2/2
+Status: Phase 05 plans 01-02 complete ✓
+Last activity: 2026-02-21 — custom domains CRUD + RLS (05-02)
+Stopped at: Completed 05-02-PLAN.md
 
 ## Key Decisions
 
@@ -34,6 +34,7 @@ Stopped at: Phase 04 fully verified
 | Split op.execute() per SQL statement | asyncpg rejects multi-command prepared statements |
 | Raw SQL Alembic migration for auth.users FK | Supabase auth schema not in SQLAlchemy metadata |
 | usePreferences hook encapsulates domain preference GET/PUT logic | Clean separation, dashboard just calls saveDomains |
+| 05_02 migration chained after 05_01_daily_snapshots | Fixed multiple-head conflict; linear migration graph |
 
 ## Accumulated Context
 
@@ -57,3 +58,5 @@ Stopped at: Phase 04 fully verified
 | 04 | 02 | 5min | 2 |
 | 04 | 03 | 15min | 9 |
 | 04 | 04 | 8min | 3 |
+| 05 | 01 | 15min | 4 |
+| 05 | 02 | 15min | 4 |
