@@ -9,6 +9,7 @@ import { DomainSelector } from '../../components/DomainSelector'
 import { StockCard } from '../../components/StockCard'
 import { ScoreBreakdown } from '../../components/ScoreBreakdown'
 import { supabase } from '../../lib/supabase'
+import { usePreferences } from '../../hooks/usePreferences'
 
 export const Route = createFileRoute('/_authenticated/dashboard')({
   component: Dashboard,
@@ -25,16 +26,30 @@ function Dashboard() {
   const [activeDomain, setActiveDomain] = useState<string | null>(null)
   const [selectedStock, setSelectedStock] = useState<any>(null)
   const [session, setSession] = useState<any>(null)
+  const { savedDomains, loading: prefLoading, saveDomains } = usePreferences()
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
   }, [])
 
+  useEffect(() => {
+    if (!prefLoading && savedDomains !== null && savedDomains.length === 0 && currentDomain) {
+      saveDomains([currentDomain])
+    }
+  }, [prefLoading, savedDomains])
+
   const displayName = session?.user?.user_metadata?.display_name ?? session?.user?.email ?? ''
 
   const domains: any[] = data?.domains ?? []
-  const currentDomain = activeDomain ?? domains[0]?.domain ?? null
   const domainNames = domains.map((d: any) => d.domain)
+  const currentDomain = (() => {
+    if (activeDomain) return activeDomain
+    if (savedDomains && savedDomains.length > 0) {
+      const match = domainNames.find(d => d === savedDomains[0])
+      return match ?? domainNames[0] ?? null
+    }
+    return domainNames[0] ?? null
+  })()
   const currentStocks = domains.find((d: any) => d.domain === currentDomain)?.top5 ?? []
 
   return (
@@ -94,7 +109,10 @@ function Dashboard() {
         ) : (
           <>
             {data?.best_overall && <BestOverall stock={data.best_overall} />}
-            <DomainSelector domains={domainNames} active={currentDomain ?? ''} onSelect={setActiveDomain} />
+            <DomainSelector domains={domainNames} active={currentDomain ?? ''} onSelect={(domain) => {
+                setActiveDomain(domain)
+                saveDomains([domain])
+              }} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {currentStocks.map((stock: any) => (
                 <StockCard key={stock.ticker} stock={stock} onClick={() => setSelectedStock(stock)} />
