@@ -2,6 +2,7 @@ import logging
 from datetime import datetime, timezone
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
+from apscheduler.triggers.cron import CronTrigger
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 import yfinance as yf
@@ -9,6 +10,7 @@ import yfinance as yf
 from sqlalchemy.orm import selectinload
 from .config import settings
 from .services.data_fetcher import fetch_all_stocks, compute_factors_for_ticker, compute_long_term_score, SEED_TICKERS
+from .services.snapshot_service import snapshot_job
 from .services.ranking_engine import rank_domain
 from .models.score_snapshot import ScoreSnapshot
 from .models.stock import Stock, Domain
@@ -122,5 +124,12 @@ def create_scheduler() -> BackgroundScheduler:
         replace_existing=True,
         max_instances=1,  # Prevents overlapping runs if a fetch takes longer than the interval
         next_run_time=datetime.now(timezone.utc),  # Fire immediately on startup
+    )
+    scheduler.add_job(
+        snapshot_job,
+        CronTrigger(hour=21, minute=0, timezone="UTC"),
+        id="snapshot_job",
+        replace_existing=True,
+        max_instances=1,
     )
     return scheduler
