@@ -7,6 +7,7 @@ from .scheduler import create_scheduler
 from .routers.health import router as health_router
 from .routers.rankings import router as rankings_router
 from .routers.domains import router as domains_router
+from .routers.preferences import router as preferences_router
 
 _scheduler = None
 
@@ -39,6 +40,7 @@ app.add_middleware(
 app.include_router(health_router)
 app.include_router(rankings_router)
 app.include_router(domains_router)
+app.include_router(preferences_router)
 
 
 @app.get("/")
