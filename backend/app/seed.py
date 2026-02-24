@@ -1,7 +1,9 @@
 import logging
+
 from sqlalchemy import select
+
 from .database import async_session_maker
-from .models.stock import Stock, Domain
+from .models.stock import Domain, Stock
 
 logger = logging.getLogger(__name__)
 

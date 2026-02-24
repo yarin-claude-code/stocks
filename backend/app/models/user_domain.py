@@ -1,8 +1,9 @@
-from sqlalchemy import Integer, Text, String, ForeignKey, func
-from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import datetime
 import uuid
+from datetime import datetime
+
+from sqlalchemy import ForeignKey, Integer, String, Text, func
+from sqlalchemy.dialects.postgresql import TIMESTAMP, UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..database import Base
 

@@ -13,6 +13,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedHistoryTickerRouteImport } from './routes/_authenticated/history.$ticker'
+import { Route as AuthenticatedDomainsCustomRouteImport } from './routes/_authenticated/domains.custom'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -33,16 +35,32 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedHistoryTickerRoute =
+  AuthenticatedHistoryTickerRouteImport.update({
+    id: '/history/$ticker',
+    path: '/history/$ticker',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDomainsCustomRoute =
+  AuthenticatedDomainsCustomRouteImport.update({
+    id: '/domains/custom',
+    path: '/domains/custom',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/domains/custom': typeof AuthenticatedDomainsCustomRoute
+  '/history/$ticker': typeof AuthenticatedHistoryTickerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/domains/custom': typeof AuthenticatedDomainsCustomRoute
+  '/history/$ticker': typeof AuthenticatedHistoryTickerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -50,18 +68,27 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/domains/custom': typeof AuthenticatedDomainsCustomRoute
+  '/_authenticated/history/$ticker': typeof AuthenticatedHistoryTickerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/domains/custom'
+    | '/history/$ticker'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/dashboard'
+  to: '/' | '/login' | '/dashboard' | '/domains/custom' | '/history/$ticker'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
     | '/_authenticated/dashboard'
+    | '/_authenticated/domains/custom'
+    | '/_authenticated/history/$ticker'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -100,15 +127,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/history/$ticker': {
+      id: '/_authenticated/history/$ticker'
+      path: '/history/$ticker'
+      fullPath: '/history/$ticker'
+      preLoaderRoute: typeof AuthenticatedHistoryTickerRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/domains/custom': {
+      id: '/_authenticated/domains/custom'
+      path: '/domains/custom'
+      fullPath: '/domains/custom'
+      preLoaderRoute: typeof AuthenticatedDomainsCustomRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDomainsCustomRoute: typeof AuthenticatedDomainsCustomRoute
+  AuthenticatedHistoryTickerRoute: typeof AuthenticatedHistoryTickerRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDomainsCustomRoute: AuthenticatedDomainsCustomRoute,
+  AuthenticatedHistoryTickerRoute: AuthenticatedHistoryTickerRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

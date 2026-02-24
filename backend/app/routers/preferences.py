@@ -1,8 +1,9 @@
+import uuid
+
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-import uuid
 
 from app.database import get_db
 from app.models.user_preference import UserPreference

@@ -1,8 +1,10 @@
+from datetime import date, timedelta
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import select
-from app.models.daily_snapshot import DailySnapshot
+
 from app.database import get_db
-from datetime import date, timedelta
+from app.models.daily_snapshot import DailySnapshot
 
 router = APIRouter()
 

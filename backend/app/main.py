@@ -1,16 +1,18 @@
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import engine, Base
-from .seed import seed_db
-from .scheduler import create_scheduler
-from .routers.health import router as health_router
-from .routers.rankings import router as rankings_router
-from .routers.domains import router as domains_router
-from .routers.preferences import router as preferences_router
+
+from .database import Base, engine
 from .routers.auth import router as auth_router
 from .routers.custom_domains import router as custom_domains_router
+from .routers.domains import router as domains_router
+from .routers.health import router as health_router
 from .routers.history import router as history_router
+from .routers.preferences import router as preferences_router
+from .routers.rankings import router as rankings_router
+from .scheduler import create_scheduler
+from .seed import seed_db
 
 _scheduler = None
 

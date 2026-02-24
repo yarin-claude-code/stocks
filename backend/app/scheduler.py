@@ -1,20 +1,25 @@
 import logging
 from datetime import datetime, timezone
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.interval import IntervalTrigger
-from apscheduler.triggers.cron import CronTrigger
-from sqlalchemy import create_engine, select
-from sqlalchemy.orm import Session
-import yfinance as yf
 
-from sqlalchemy.orm import selectinload
+import yfinance as yf
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import Session, selectinload
+
 from .config import settings
-from .services.data_fetcher import fetch_all_stocks, compute_factors_for_ticker, compute_long_term_score, SEED_TICKERS
-from .services.snapshot_service import snapshot_job
-from .services.ranking_engine import rank_domain
-from .models.score_snapshot import ScoreSnapshot
-from .models.stock import Stock, Domain
 from .models.ranking_result import RankingResult
+from .models.score_snapshot import ScoreSnapshot
+from .models.stock import Domain, Stock
+from .services.data_fetcher import (
+    SEED_TICKERS,
+    compute_factors_for_ticker,
+    compute_long_term_score,
+    fetch_all_stocks,
+)
+from .services.ranking_engine import rank_domain
+from .services.snapshot_service import snapshot_job
 
 logger = logging.getLogger(__name__)
 
