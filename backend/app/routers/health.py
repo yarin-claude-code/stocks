@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
+
 from fastapi import APIRouter, Depends
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
 
 from ..database import get_db
 from ..models.score_snapshot import ScoreSnapshot

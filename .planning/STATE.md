@@ -2,11 +2,11 @@
 
 ## Current Position
 
-Phase: 04 — Authentication & Personalization
-Plan: 4/4
-Status: Phase 04 plan 04 complete
-Last activity: 2026-02-20 — Plan 04-04 executed
-Stopped at: Completed 04-04-PLAN.md
+Phase: 06 — DevOps CI/CD Pipeline
+Plan: 3/5
+Status: In progress
+Last activity: 2026-02-24 — Playwright E2E setup (06-03)
+Stopped at: Completed 06-03-PLAN.md
 
 ## Key Decisions
 
@@ -34,6 +34,22 @@ Stopped at: Completed 04-04-PLAN.md
 | Split op.execute() per SQL statement | asyncpg rejects multi-command prepared statements |
 | Raw SQL Alembic migration for auth.users FK | Supabase auth schema not in SQLAlchemy metadata |
 | usePreferences hook encapsulates domain preference GET/PUT logic | Clean separation, dashboard just calls saveDomains |
+| 05_02 migration chained after 05_01_daily_snapshots | Fixed multiple-head conflict; linear migration graph |
+| HistoryPage under /_authenticated layout | History is user-facing, requires login |
+| StockCard history link uses stopPropagation | Prevents triggering breakdown modal when clicking history link |
+| domains.custom.tsx file-based route | TanStack Router file-based pattern; `router.tsx` in plan frontmatter was incorrect |
+| My Domains nav in user menu dropdown | No sidebar/navbar; user menu is the only nav surface |
+| GITHUB_TOKEN for ghcr.io auth | No PAT secret required; push gated on github.ref == refs/heads/main |
+| ruff rules E/F/I only | Permissive — catches real errors (undefined names, unused imports), not style |
+| Playwright smoke test no auth/API deps | Test passes in any CI context where Vite can start |
+| BASE_URL env var overrides baseURL | Flexible CI deployment targeting different hosts |
+| Two-stage Docker builds | Slim runtime images — no build tools in production |
+| nginx proxy_pass uses Docker DNS | 'backend' service name resolves via Docker Compose network |
+
+## Accumulated Context
+
+### Roadmap Evolution
+- Phase 6 added: DevOps — CI/CD pipeline, Docker containerization, GitHub Actions, deployment configuration
 
 ## Performance
 
@@ -52,3 +68,11 @@ Stopped at: Completed 04-04-PLAN.md
 | 04 | 02 | 5min | 2 |
 | 04 | 03 | 15min | 9 |
 | 04 | 04 | 8min | 3 |
+| 05 | 01 | 15min | 4 |
+| 05 | 02 | 15min | 4 |
+| 05 | 03 | 10min | 6 |
+| 05 | 04 | 10min | 3 |
+| 05 | 05 | 5min | 0 |
+| 06 | 01 | 2min | 6 |
+| 06 | 02 | 12min | 7 |
+| 06 | 03 | 5min | 3 |

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { useState, useEffect, useRef } from 'react'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchRankings } from '../../api/client'
 import { isMarketOpen } from '../../hooks/useMarketOpen'
@@ -26,6 +26,8 @@ function Dashboard() {
   const [activeDomain, setActiveDomain] = useState<string | null>(null)
   const [selectedStock, setSelectedStock] = useState<any>(null)
   const [session, setSession] = useState<any>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
   const { savedDomains, loading: prefLoading, saveDomains } = usePreferences()
 
   useEffect(() => {
@@ -33,10 +35,15 @@ function Dashboard() {
   }, [])
 
   useEffect(() => {
-    if (!prefLoading && savedDomains !== null && savedDomains.length === 0 && currentDomain) {
-      saveDomains([currentDomain])
+    if (!menuOpen) return
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false)
+      }
     }
-  }, [prefLoading, savedDomains])
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [menuOpen])
 
   const displayName = session?.user?.user_metadata?.display_name ?? session?.user?.email ?? ''
 
@@ -50,6 +57,13 @@ function Dashboard() {
     }
     return domainNames[0] ?? null
   })()
+
+  useEffect(() => {
+    if (!prefLoading && savedDomains !== null && savedDomains.length === 0 && currentDomain) {
+      saveDomains([currentDomain])
+    }
+  }, [prefLoading, savedDomains]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const currentStocks = domains.find((d: any) => d.domain === currentDomain)?.top5 ?? []
 
   return (
@@ -79,21 +93,32 @@ function Dashboard() {
                 Market Closed
               </span>
             )}
-            <div className="relative group">
-              <button className="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full">
+            <div className="relative" ref={menuRef}>
+              <button
+                className="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full"
+                onClick={() => setMenuOpen(o => !o)}
+              >
                 {displayName}
               </button>
-              <div className="absolute right-0 mt-1 hidden group-hover:block bg-slate-900 border border-slate-800 rounded shadow-lg z-10">
-                <button
-                  className="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
-                  onClick={async () => {
-                    await supabase.auth.signOut()
-                    window.location.href = '/login'
-                  }}
-                >
-                  Logout
-                </button>
-              </div>
+              {menuOpen && (
+                <div className="absolute right-0 mt-1 bg-slate-900 border border-slate-800 rounded shadow-lg z-10">
+                  <button
+                    className="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
+                    onClick={async () => {
+                      await supabase.auth.signOut()
+                      window.location.href = '/login'
+                    }}
+                  >
+                    Logout
+                  </button>
+                  <Link
+                    to="/domains/custom"
+                    className="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
+                  >
+                    My Domains
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -113,6 +138,18 @@ function Dashboard() {
                 setActiveDomain(domain)
                 saveDomains([domain])
               }} />
+            {currentStocks.length > 0 && (() => {
+              const best = currentStocks.reduce((a: any, b: any) => a.rank < b.rank ? a : b)
+              return (
+                <div className="mb-4 px-4 py-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center gap-2">
+                  <span className="text-indigo-400 text-lg">★</span>
+                  <p className="text-sm text-slate-300">
+                    Best Stock to Invest Now in <span className="text-white font-semibold">{currentDomain}</span> is:{' '}
+                    <span className="text-indigo-400 font-bold text-base">{best.ticker}</span>
+                  </p>
+                </div>
+              )
+            })()}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {currentStocks.map((stock: any) => (
                 <StockCard key={stock.ticker} stock={stock} onClick={() => setSelectedStock(stock)} />

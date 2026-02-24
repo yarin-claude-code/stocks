@@ -9,19 +9,16 @@ All 6 required test cases covering:
   5. 0–100 scaling correctness
   6. Score breakdown structure (FactorScore fields)
 """
-import pytest
 from app.services.ranking_engine import (
-    rank_domain,
-    normalize_factor,
-    compute_composite,
-    scale_to_0_100,
-    StockScore,
-    FactorScore,
-    WEIGHT_MOMENTUM,
-    WEIGHT_VOLUME_CHANGE,
-    WEIGHT_VOLATILITY,
-    WEIGHT_RELATIVE_STRENGTH,
     WEIGHT_FINANCIAL_RATIO,
+    WEIGHT_MOMENTUM,
+    WEIGHT_RELATIVE_STRENGTH,
+    WEIGHT_VOLATILITY,
+    WEIGHT_VOLUME_CHANGE,
+    FactorScore,
+    StockScore,
+    normalize_factor,
+    rank_domain,
 )
 
 # ---------------------------------------------------------------------------

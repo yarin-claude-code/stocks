@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "db": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--transport", "stdio",
+        "--dsn", "postgresql://postgres:YOUR_SUPABASE_PASSWORD@db.gaianbrkezkpkngebztd.supabase.co:5432/postgres"
+      ]
+    }
+  }
+}

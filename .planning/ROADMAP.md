@@ -1,7 +1,7 @@
 # Roadmap: Smart Stock Ranker v1.0
 
 **Stack:** FastAPI + React + Supabase Postgres + yfinance
-**Created:** 2026-02-17 | **Updated:** 2026-02-20
+**Created:** 2026-02-17 | **Updated:** 2026-02-24
 
 ---
 
@@ -41,12 +41,24 @@ User accounts with saved domain preferences via Supabase Auth.
 
 ## Phase 5: Historical Tracking & Custom Domains
 Daily score snapshots, trend charts, user-defined domains with ticker validation.
-- **Plans:** 5 plans
-  - [ ] 05-01-PLAN.md — DailySnapshot model + Alembic migration + snapshot_job + compute_trend
-  - [ ] 05-02-PLAN.md — user_domains/user_domain_tickers models + migration + RLS + CRUD routes
-  - [ ] 05-03-PLAN.md — GET /api/history/{ticker} + ScoreHistoryChart + TrendBadge + /history/:ticker route
-  - [ ] 05-04-PLAN.md — CustomDomainManager UI + /domains/custom route
-  - [ ] 05-05-PLAN.md — Human verification of all Phase 5 features
+- **Plans:** 5/5 complete ✓
+  - [x] 05-01-PLAN.md — DailySnapshot model + Alembic migration + snapshot_job + compute_trend
+  - [x] 05-02-PLAN.md — user_domains/user_domain_tickers models + migration + RLS + CRUD routes
+  - [x] 05-03-PLAN.md — GET /api/history/{ticker} + ScoreHistoryChart + TrendBadge + /history/:ticker route
+  - [x] 05-04-PLAN.md — CustomDomainManager UI + /domains/custom route
+  - [x] 05-05-PLAN.md — Human verification of all Phase 5 features
+
+## Phase 6: DevOps — CI/CD Pipeline & Docker
+
+**Goal:** Every PR runs lint + pytest + Playwright E2E + Docker build automatically; merge to main pushes images to ghcr.io; branch protection enforces all checks.
+**Depends on:** Phase 5
+**Plans:** 2/4 plans executed
+
+Plans:
+- [ ] 06-01-PLAN.md — Backend + frontend Dockerfiles, nginx.conf, Docker Compose
+- [ ] 06-02-PLAN.md — GitHub Actions CI workflow (4 jobs) + ruff config
+- [ ] 06-03-PLAN.md — Playwright config + smoke test
+- [ ] 06-04-PLAN.md — CI smoke run + branch protection setup
 
 ---
 
@@ -57,8 +69,7 @@ Daily score snapshots, trend charts, user-defined domains with ticker validation
 | DATA-01–05 | 1, 01.1 |
 | ALGO-01–06 | 2 ✓ |
 | DOM-01–02 | 3 |
-| DOM-03–04 | 5 |
-| UI-01–05 | 3 |
+| DOM-03–04 | 5 | 3/5 | In Progress|  |
 | AUTH-01–04 | 4 | 3/5 | In Progress|  |
 
-*Updated: 2026-02-20*
+*Updated: 2026-02-24*

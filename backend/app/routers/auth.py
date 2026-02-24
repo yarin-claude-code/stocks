@@ -1,6 +1,6 @@
-import jwt
 import httpx
-from fastapi import Header, HTTPException, APIRouter
+import jwt
+from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
 
 from app.config import settings

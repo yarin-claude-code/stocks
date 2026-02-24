@@ -9,8 +9,9 @@ compute_factors_for_ticker() extracts all 5 raw factor values from a
 30-day history DataFrame. Each factor is independently wrapped in
 try/except so one failure does not block others.
 """
-import math
 import logging
+import math
+
 import numpy as np
 import yfinance as yf
 
@@ -92,10 +93,62 @@ def fetch_all_stocks(tickers: list[str] | None = None) -> dict[str, dict]:
         return {}
 
 
+def compute_long_term_score(ticker: str) -> float | None:
+    """Fetch 1-year daily history and compute a 0-100 long-term investment score.
+
+    Combines three signals (each 0-100), equally weighted:
+      - 1yr total return       (higher = better)
+      - max drawdown           (less negative = better; inverted)
+      - monthly consistency    (% of months with positive return)
+
+    Returns None on any failure so the caller can store NULL gracefully.
+    """
+    try:
+        hist = yf.download(
+            ticker,
+            period="1y",
+            interval="1d",
+            auto_adjust=True,
+            progress=False,
+        )
+        if hist.empty or len(hist) < 20:
+            return None
+
+        close = hist["Close"].squeeze().dropna()
+        if len(close) < 20:
+            return None
+
+        # --- 1yr return (clamped to [-1, 3] before scoring) ---
+        total_return = float((close.iloc[-1] - close.iloc[0]) / close.iloc[0])
+        return_score = (min(max(total_return, -1.0), 3.0) + 1.0) / 4.0 * 100.0
+
+        # --- Max drawdown (rolling peak-to-trough) ---
+        rolling_max = close.cummax()
+        drawdowns = (close - rolling_max) / rolling_max
+        max_dd = float(drawdowns.min())  # most negative value
+        # map [-1, 0] -> [0, 100]; less drawdown = higher score
+        drawdown_score = (1.0 + max(max_dd, -1.0)) * 100.0
+
+        # --- Monthly consistency (% of months with positive return) ---
+        monthly = close.resample("ME").last().pct_change().dropna()
+        if len(monthly) == 0:
+            consistency_score = 50.0
+        else:
+            pct_positive = float((monthly > 0).sum()) / len(monthly)
+            consistency_score = pct_positive * 100.0
+
+        score = (return_score + drawdown_score + consistency_score) / 3.0
+        return round(min(max(score, 0.0), 100.0), 2)
+
+    except Exception as exc:
+        logger.warning("compute_long_term_score failed for %s: %s", ticker, exc)
+        return None
+
+
 def compute_factors_for_ticker(
     ticker: str,
-    history: "pd.DataFrame",       # full multi-ticker yf.download() result (30d)
-    all_histories: "pd.DataFrame",  # same object — used for relative_strength
+    history: "pd.DataFrame",       # full multi-ticker yf.download() result (30d)  # noqa: F821
+    all_histories: "pd.DataFrame",  # same object — used for relative_strength  # noqa: F821
     domain_tickers: list[str],      # all tickers in this stock's domain
 ) -> dict[str, float | None]:
     """Compute all 5 raw factor values for a single ticker from a 30-day history DataFrame.

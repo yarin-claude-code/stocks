@@ -1,0 +1,6 @@
+line-length = 100
+
+[lint]
+select = ["E", "F", "I"]
+# E = pycodestyle errors, F = pyflakes, I = isort
+ignore = ["E501"]  # line too long — covered by line-length

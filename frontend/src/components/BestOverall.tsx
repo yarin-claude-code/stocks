@@ -9,6 +9,7 @@ interface StockRanking {
     relative_strength: number | null
     financial_ratio: number | null
   }
+  long_term_score: number | null
 }
 
 function ScoreRing({ score }: { score: number }) {

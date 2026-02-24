@@ -19,7 +19,7 @@
 | ALGO-06 | Per-factor score breakdown | 2 | ✓ |
 | DOM-01 | Curated domain list (~10-15) | 3 | ✓ |
 | DOM-02 | Domain → ticker mapping | 3 | ✓ |
-| DOM-03 | Custom domains | 5 | — |
+| DOM-03 | Custom domains | 5 | ✓ |
 | DOM-04 | Ticker validation | 5 | — |
 | UI-01 | Responsive dashboard with top 5 per domain | 3 | — |
 | UI-02 | Click stock → score breakdown | 3 | — |

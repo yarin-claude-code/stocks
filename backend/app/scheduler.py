@@ -1,18 +1,25 @@
 import logging
 from datetime import datetime, timezone
+
+import yfinance as yf
 from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 from sqlalchemy import create_engine, select
-from sqlalchemy.orm import Session
-import yfinance as yf
+from sqlalchemy.orm import Session, selectinload
 
-from sqlalchemy.orm import selectinload
 from .config import settings
-from .services.data_fetcher import fetch_all_stocks, compute_factors_for_ticker, SEED_TICKERS
-from .services.ranking_engine import rank_domain
-from .models.score_snapshot import ScoreSnapshot
-from .models.stock import Stock, Domain
 from .models.ranking_result import RankingResult
+from .models.score_snapshot import ScoreSnapshot
+from .models.stock import Domain, Stock
+from .services.data_fetcher import (
+    SEED_TICKERS,
+    compute_factors_for_ticker,
+    compute_long_term_score,
+    fetch_all_stocks,
+)
+from .services.ranking_engine import rank_domain
+from .services.snapshot_service import snapshot_job
 
 logger = logging.getLogger(__name__)
 
@@ -104,6 +111,7 @@ def fetch_cycle() -> None:
                     volatility=fs["volatility"].raw if "volatility" in fs else None,
                     relative_strength=fs["relative_strength"].raw if "relative_strength" in fs else None,
                     financial_ratio=fs["financial_ratio"].raw if "financial_ratio" in fs else None,
+                    long_term_score=compute_long_term_score(ticker),
                     computed_at=now_computed,
                 ))
                 ranking_count += 1
@@ -121,5 +129,12 @@ def create_scheduler() -> BackgroundScheduler:
         replace_existing=True,
         max_instances=1,  # Prevents overlapping runs if a fetch takes longer than the interval
         next_run_time=datetime.now(timezone.utc),  # Fire immediately on startup
+    )
+    scheduler.add_job(
+        snapshot_job,
+        CronTrigger(hour=21, minute=0, timezone="UTC"),
+        id="snapshot_job",
+        replace_existing=True,
+        max_instances=1,
     )
     return scheduler
