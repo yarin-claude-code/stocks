@@ -1,7 +1,7 @@
 # Roadmap: Smart Stock Ranker v1.0
 
 **Stack:** FastAPI + React + Supabase Postgres + yfinance
-**Created:** 2026-02-17 | **Updated:** 2026-02-20
+**Created:** 2026-02-17 | **Updated:** 2026-02-24
 
 ---
 
@@ -48,14 +48,17 @@ Daily score snapshots, trend charts, user-defined domains with ticker validation
   - [x] 05-04-PLAN.md — CustomDomainManager UI + /domains/custom route
   - [x] 05-05-PLAN.md — Human verification of all Phase 5 features
 
-### Phase 6: DevOps — CI/CD pipeline, Docker containerization, GitHub Actions, deployment configuration
+## Phase 6: DevOps — CI/CD Pipeline & Docker
 
-**Goal:** [To be planned]
+**Goal:** Every PR runs lint + pytest + Playwright E2E + Docker build automatically; merge to main pushes images to ghcr.io; branch protection enforces all checks.
 **Depends on:** Phase 5
-**Plans:** 0 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 6 to break down)
+- [ ] 06-01-PLAN.md — Backend + frontend Dockerfiles, nginx.conf, Docker Compose
+- [ ] 06-02-PLAN.md — GitHub Actions CI workflow (4 jobs) + ruff config
+- [ ] 06-03-PLAN.md — Playwright config + smoke test
+- [ ] 06-04-PLAN.md — CI smoke run + branch protection setup
 
 ---
 
@@ -69,4 +72,4 @@ Plans:
 | DOM-03–04 | 5 | 3/5 | In Progress|  |
 | AUTH-01–04 | 4 | 3/5 | In Progress|  |
 
-*Updated: 2026-02-20*
+*Updated: 2026-02-24*
