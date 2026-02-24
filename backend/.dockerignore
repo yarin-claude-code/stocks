@@ -1,0 +1,10 @@
+__pycache__
+*.pyc
+*.pyo
+.env
+.env.*
+tests/
+alembic/
+alembic.ini
+*.log
+.pytest_cache
