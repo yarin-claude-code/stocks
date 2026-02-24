@@ -52,7 +52,7 @@ Daily score snapshots, trend charts, user-defined domains with ticker validation
 
 **Goal:** Every PR runs lint + pytest + Playwright E2E + Docker build automatically; merge to main pushes images to ghcr.io; branch protection enforces all checks.
 **Depends on:** Phase 5
-**Plans:** 4 plans
+**Plans:** 2/4 plans executed
 
 Plans:
 - [ ] 06-01-PLAN.md — Backend + frontend Dockerfiles, nginx.conf, Docker Compose

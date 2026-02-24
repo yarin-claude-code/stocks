@@ -2,11 +2,11 @@
 
 ## Current Position
 
-Phase: 05 — Historical Tracking & Custom Domains
-Plan: 5/5
-Status: Phase 05 complete ✓
-Last activity: 2026-02-22 — human verification of all Phase 5 features (05-05)
-Stopped at: Completed 05-05-PLAN.md
+Phase: 06 — DevOps CI/CD Pipeline
+Plan: 3/5
+Status: In progress
+Last activity: 2026-02-24 — Playwright E2E setup (06-03)
+Stopped at: Completed 06-03-PLAN.md
 
 ## Key Decisions
 
@@ -39,6 +39,10 @@ Stopped at: Completed 05-05-PLAN.md
 | StockCard history link uses stopPropagation | Prevents triggering breakdown modal when clicking history link |
 | domains.custom.tsx file-based route | TanStack Router file-based pattern; `router.tsx` in plan frontmatter was incorrect |
 | My Domains nav in user menu dropdown | No sidebar/navbar; user menu is the only nav surface |
+| Playwright smoke test no auth/API deps | Test passes in any CI context where Vite can start |
+| BASE_URL env var overrides baseURL | Flexible CI deployment targeting different hosts |
+| Two-stage Docker builds | Slim runtime images — no build tools in production |
+| nginx proxy_pass uses Docker DNS | 'backend' service name resolves via Docker Compose network |
 
 ## Accumulated Context
 
@@ -67,3 +71,5 @@ Stopped at: Completed 05-05-PLAN.md
 | 05 | 03 | 10min | 6 |
 | 05 | 04 | 10min | 3 |
 | 05 | 05 | 5min | 0 |
+| 06 | 01 | 2min | 6 |
+| 06 | 03 | 5min | 3 |
