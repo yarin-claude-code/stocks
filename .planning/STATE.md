@@ -39,6 +39,8 @@ Stopped at: Completed 06-03-PLAN.md
 | StockCard history link uses stopPropagation | Prevents triggering breakdown modal when clicking history link |
 | domains.custom.tsx file-based route | TanStack Router file-based pattern; `router.tsx` in plan frontmatter was incorrect |
 | My Domains nav in user menu dropdown | No sidebar/navbar; user menu is the only nav surface |
+| GITHUB_TOKEN for ghcr.io auth | No PAT secret required; push gated on github.ref == refs/heads/main |
+| ruff rules E/F/I only | Permissive — catches real errors (undefined names, unused imports), not style |
 | Playwright smoke test no auth/API deps | Test passes in any CI context where Vite can start |
 | BASE_URL env var overrides baseURL | Flexible CI deployment targeting different hosts |
 | Two-stage Docker builds | Slim runtime images — no build tools in production |
@@ -72,4 +74,5 @@ Stopped at: Completed 06-03-PLAN.md
 | 05 | 04 | 10min | 3 |
 | 05 | 05 | 5min | 0 |
 | 06 | 01 | 2min | 6 |
+| 06 | 02 | 12min | 7 |
 | 06 | 03 | 5min | 3 |
