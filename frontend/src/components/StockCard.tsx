@@ -71,9 +71,9 @@ export function StockCard({ stock, onClick }: { stock: StockRanking; onClick: ()
 
       {/* Factor bars */}
       <div className="space-y-1 mt-2">
-        {stock.factors.momentum != null && <FactorBar label="Price Trend" value={stock.factors.momentum} />}
-        {stock.factors.volume_change != null && <FactorBar label="Trading Activity" value={stock.factors.volume_change} />}
-        {stock.factors.relative_strength != null && <FactorBar label="Sector Strength" value={stock.factors.relative_strength} />}
+        {stock.factors.momentum != null && <FactorBar label="Is the price going up?" value={stock.factors.momentum} />}
+        {stock.factors.volume_change != null && <FactorBar label="Are people buying more?" value={stock.factors.volume_change} />}
+        {stock.factors.relative_strength != null && <FactorBar label="Beating its sector?" value={stock.factors.relative_strength} />}
       </div>
 
       <div className="flex justify-between items-center mt-3">

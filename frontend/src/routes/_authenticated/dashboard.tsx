@@ -137,6 +137,18 @@ function Dashboard() {
                 setActiveDomain(domain)
                 saveDomains([domain])
               }} />
+            {currentStocks.length > 0 && (() => {
+              const best = currentStocks.reduce((a: any, b: any) => a.rank < b.rank ? a : b)
+              return (
+                <div className="mb-4 px-4 py-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center gap-2">
+                  <span className="text-indigo-400 text-lg">★</span>
+                  <p className="text-sm text-slate-300">
+                    Best Stock to Invest Now in <span className="text-white font-semibold">{currentDomain}</span> is:{' '}
+                    <span className="text-indigo-400 font-bold text-base">{best.ticker}</span>
+                  </p>
+                </div>
+              )
+            })()}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {currentStocks.map((stock: any) => (
                 <StockCard key={stock.ticker} stock={stock} onClick={() => setSelectedStock(stock)} />

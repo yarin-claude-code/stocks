@@ -9,11 +9,11 @@ const WEIGHTS: Record<string, number> = {
 }
 
 const LABELS: Record<string, string> = {
-  momentum: 'Momentum',
-  volume_change: 'Volume Change',
-  volatility: 'Volatility',
-  relative_strength: 'Relative Strength',
-  financial_ratio: 'Financial Ratio',
+  momentum: 'Is the price going up?',
+  volume_change: 'Are people buying more?',
+  volatility: 'How steady is the price?',
+  relative_strength: 'Beating its sector?',
+  financial_ratio: 'Is the stock fairly priced?',
 }
 
 function gradeLabel(score: number) {
