@@ -57,19 +57,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install backend dependencies
-        working-directory: backend
-        run: pip install -r requirements.txt
-      - name: Start backend
-        working-directory: backend
-        run: uvicorn app.main:app --host 0.0.0.0 --port 8001 &
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          FETCH_INTERVAL_MINUTES: "999"
-
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
@@ -79,12 +66,10 @@ jobs:
       - name: Install Playwright browsers
         working-directory: frontend
         run: npx playwright install chromium --with-deps
-      - name: Wait for backend
-        run: sleep 5
       - name: Run Playwright tests
         working-directory: frontend
         run: npx playwright test
-        # No BASE_URL override — Playwright's webServer block starts Vite on 5173
+        # Smoke test only — Playwright webServer block starts Vite; no backend needed
 
   docker:
     name: Docker Build & Push
