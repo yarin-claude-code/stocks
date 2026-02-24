@@ -3,17 +3,16 @@ Tests for data_fetcher.py — yfinance batch fetch and validation.
 
 All yfinance calls are mocked; no real network calls are made.
 """
-import math
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import pandas as pd
+import pytest
 
 from app.services.data_fetcher import (
+    SEED_TICKERS,
     fetch_all_stocks,
     validate_ticker_data,
-    SEED_TICKERS,
 )
-
 
 # ---------------------------------------------------------------------------
 # validate_ticker_data tests
@@ -157,7 +156,7 @@ def test_fetch_all_stocks_default_uses_seed_tickers():
     mock_raw.__getitem__ = lambda self, key: close_df if key == "Close" else volume_df
 
     with patch("app.services.data_fetcher.yf.download", return_value=mock_raw) as mock_dl:
-        result = fetch_all_stocks()
+        fetch_all_stocks()
 
     call_args = mock_dl.call_args
     passed_tickers = call_args[0][0]  # first positional arg

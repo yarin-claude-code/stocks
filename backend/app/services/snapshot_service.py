@@ -70,7 +70,7 @@ def snapshot_job() -> None:
             slope = compute_trend(list(past) + [result.composite_score])
             domain_id = domain_map.get(result.domain)
 
-            snap = session.merge(DailySnapshot(
+            session.merge(DailySnapshot(
                 ticker=result.ticker,
                 snap_date=today,
                 composite_score=result.composite_score,

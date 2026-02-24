@@ -1,6 +1,6 @@
 import asyncio
-import sys
 import os
+import sys
 from logging.config import fileConfig
 
 from sqlalchemy import pool
@@ -12,10 +12,11 @@ from alembic import context
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
-from app.database import Base
-from app import models  # noqa: F401 — registers all models with Base.metadata
+from app import models  # noqa: F401, E402 — registers all models with Base.metadata
+from app.database import Base  # noqa: E402
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

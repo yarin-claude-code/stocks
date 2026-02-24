@@ -9,8 +9,9 @@ compute_factors_for_ticker() extracts all 5 raw factor values from a
 30-day history DataFrame. Each factor is independently wrapped in
 try/except so one failure does not block others.
 """
-import math
 import logging
+import math
+
 import numpy as np
 import yfinance as yf
 
@@ -146,8 +147,8 @@ def compute_long_term_score(ticker: str) -> float | None:
 
 def compute_factors_for_ticker(
     ticker: str,
-    history: "pd.DataFrame",       # full multi-ticker yf.download() result (30d)
-    all_histories: "pd.DataFrame",  # same object — used for relative_strength
+    history: "pd.DataFrame",       # full multi-ticker yf.download() result (30d)  # noqa: F821
+    all_histories: "pd.DataFrame",  # same object — used for relative_strength  # noqa: F821
     domain_tickers: list[str],      # all tickers in this stock's domain
 ) -> dict[str, float | None]:
     """Compute all 5 raw factor values for a single ticker from a 30-day history DataFrame.
