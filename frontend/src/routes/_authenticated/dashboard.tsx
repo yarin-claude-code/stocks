@@ -45,12 +45,6 @@ function Dashboard() {
     return () => document.removeEventListener('mousedown', handler)
   }, [menuOpen])
 
-  useEffect(() => {
-    if (!prefLoading && savedDomains !== null && savedDomains.length === 0 && currentDomain) {
-      saveDomains([currentDomain])
-    }
-  }, [prefLoading, savedDomains])
-
   const displayName = session?.user?.user_metadata?.display_name ?? session?.user?.email ?? ''
 
   const domains: any[] = data?.domains ?? []
@@ -63,6 +57,13 @@ function Dashboard() {
     }
     return domainNames[0] ?? null
   })()
+
+  useEffect(() => {
+    if (!prefLoading && savedDomains !== null && savedDomains.length === 0 && currentDomain) {
+      saveDomains([currentDomain])
+    }
+  }, [prefLoading, savedDomains]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const currentStocks = domains.find((d: any) => d.domain === currentDomain)?.top5 ?? []
 
   return (
