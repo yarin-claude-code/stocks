@@ -75,11 +75,11 @@ function Dashboard() {
             <h1 className="text-2xl font-bold text-white tracking-tight">Smart Stock Ranker</h1>
             {data?.best_overall && (
               <p className="text-sm font-semibold text-indigo-400 mt-1">
-                Algorithm Chose: <span className="text-white">{data.best_overall.ticker}</span> To Invest
+                Today's top pick: <span className="text-white">{data.best_overall.ticker}</span>
               </p>
             )}
             {!data?.best_overall && !isLoading && (
-              <p className="text-xs text-slate-500 mt-0.5">Quantitative ranking · refreshes every 5 min</p>
+              <p className="text-xs text-slate-500 mt-0.5">Auto-updates every 5 minutes</p>
             )}
           </div>
           <div className="flex items-center gap-3">
@@ -95,7 +95,7 @@ function Dashboard() {
             )}
             <div className="relative" ref={menuRef}>
               <button
-                className="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full"
+                className="cursor-pointer text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full"
                 onClick={() => setMenuOpen(o => !o)}
               >
                 {displayName}
@@ -103,7 +103,7 @@ function Dashboard() {
               {menuOpen && (
                 <div className="absolute right-0 mt-1 bg-slate-900 border border-slate-800 rounded shadow-lg z-10">
                   <button
-                    className="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
+                    className="cursor-pointer block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
                     onClick={async () => {
                       await supabase.auth.signOut()
                       window.location.href = '/login'
@@ -113,7 +113,7 @@ function Dashboard() {
                   </button>
                   <Link
                     to="/domains/custom"
-                    className="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
+                    className="cursor-pointer block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800"
                   >
                     My Domains
                   </Link>
@@ -127,7 +127,7 @@ function Dashboard() {
           <>
             <Skeleton className="h-24 w-full mb-6" />
             <div className="flex gap-2 mb-6">{[...Array(5)].map((_, i) => <Skeleton key={i} className="h-9 w-24" />)}</div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-48" />)}
             </div>
           </>
@@ -144,15 +144,17 @@ function Dashboard() {
                 <div className="mb-4 px-4 py-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center gap-2">
                   <span className="text-indigo-400 text-lg">★</span>
                   <p className="text-sm text-slate-300">
-                    Best Stock to Invest Now in <span className="text-white font-semibold">{currentDomain}</span> is:{' '}
+                    Best pick in <span className="text-white font-semibold">{currentDomain}</span>:{' '}
                     <span className="text-indigo-400 font-bold text-base">{best.ticker}</span>
                   </p>
                 </div>
               )
             })()}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {currentStocks.map((stock: any) => (
-                <StockCard key={stock.ticker} stock={stock} onClick={() => setSelectedStock(stock)} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {currentStocks.map((stock: any, i: number) => (
+                <div key={stock.ticker} className={currentStocks.length % 2 === 1 && i === currentStocks.length - 1 ? 'md:col-span-2' : ''}>
+                  <StockCard stock={stock} onClick={() => setSelectedStock(stock)} />
+                </div>
               ))}
             </div>
           </>

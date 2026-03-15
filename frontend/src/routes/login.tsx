@@ -49,11 +49,11 @@ function LoginPage() {
         <h1 className="text-xl font-bold text-white mb-6">Smart Stock Ranker</h1>
         <div className="flex gap-2 mb-6">
           <button
-            className={`flex-1 py-1.5 rounded text-sm font-medium transition-colors ${mode === 'login' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+            className={`cursor-pointer flex-1 py-1.5 rounded text-sm font-medium transition-colors ${mode === 'login' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400'}`}
             onClick={() => setMode('login')}
           >Login</button>
           <button
-            className={`flex-1 py-1.5 rounded text-sm font-medium transition-colors ${mode === 'register' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+            className={`cursor-pointer flex-1 py-1.5 rounded text-sm font-medium transition-colors ${mode === 'register' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400'}`}
             onClick={() => setMode('register')}
           >Register</button>
         </div>
@@ -91,7 +91,7 @@ function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-medium py-2 rounded text-sm transition-colors"
+            className="cursor-pointer w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-medium py-2 rounded text-sm transition-colors"
           >
             {loading ? 'Loading...' : mode === 'login' ? 'Sign in' : 'Create account'}
           </button>

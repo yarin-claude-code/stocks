@@ -10,3 +10,31 @@
   --color-red: #ef4444;
   --color-amber: #f59e0b;
 }
+
+/* ── Custom horizontal scrollbar (desktop only) ── */
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #6366f1;
+    border-radius: 9999px;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #818cf8;
+    box-shadow: 0 0 12px rgba(129, 140, 248, 0.8);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #6366f1 transparent;
+  }
+}
