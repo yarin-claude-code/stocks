@@ -1,0 +1,41 @@
+services:
+  backend:
+    image: ghcr.io/yarin-claude-code/stocks/backend:main
+    container_name: stock-ranker-backend
+    env_file: ./backend/.env
+    restart: unless-stopped
+    network_mode: host
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/api/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  frontend:
+    image: ghcr.io/yarin-claude-code/stocks/frontend:main
+    container_name: stock-ranker-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.stocks.rule=Host(`stocks.srv1030125.hstgr.cloud`)
+      - traefik.http.routers.stocks.entrypoints=web,websecure
+      - traefik.http.routers.stocks.tls=true
+      - traefik.http.routers.stocks.tls.certresolver=mytlschallenge
+      - traefik.http.services.stocks.loadbalancer.server.port=80
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
+    name: root_default
