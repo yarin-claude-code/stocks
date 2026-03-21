@@ -19,4 +19,6 @@ class RankingResult(Base):
     relative_strength: Mapped[float | None] = mapped_column(Float, nullable=True)
     financial_ratio: Mapped[float | None] = mapped_column(Float, nullable=True)
     long_term_score: Mapped[float | None] = mapped_column(Float, nullable=True)
-    computed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True, nullable=False)
+    computed_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), index=True, nullable=False
+    )

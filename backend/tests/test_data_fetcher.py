@@ -3,6 +3,7 @@ Tests for data_fetcher.py — yfinance batch fetch and validation.
 
 All yfinance calls are mocked; no real network calls are made.
 """
+
 from unittest.mock import MagicMock, patch
 
 import pandas as pd

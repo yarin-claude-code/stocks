@@ -12,4 +12,6 @@ class ScoreSnapshot(Base):
     ticker: Mapped[str] = mapped_column(String(10), index=True, nullable=False)
     close_price: Mapped[float] = mapped_column(Float, nullable=False)
     volume: Mapped[float] = mapped_column(Float, nullable=False)
-    fetched_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True, nullable=False)
+    fetched_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), index=True, nullable=False
+    )

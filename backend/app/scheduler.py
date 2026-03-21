@@ -33,7 +33,9 @@ def fetch_cycle() -> None:
     logger.info("fetch_cycle: starting data fetch")
     data = fetch_all_stocks(SEED_TICKERS)
     if not data:
-        logger.warning("fetch_cycle: no data returned, skipping DB write (last-known-good retained)")
+        logger.warning(
+            "fetch_cycle: no data returned, skipping DB write (last-known-good retained)"
+        )
         return
 
     now = datetime.now(timezone.utc)
@@ -47,7 +49,9 @@ def fetch_cycle() -> None:
             )
             session.add(snapshot)
             # Update last_updated on the Stock row
-            stock = session.execute(select(Stock).where(Stock.ticker == ticker)).scalar_one_or_none()
+            stock = session.execute(
+                select(Stock).where(Stock.ticker == ticker)
+            ).scalar_one_or_none()
             if stock:
                 stock.last_updated = now
         session.commit()
@@ -56,9 +60,9 @@ def fetch_cycle() -> None:
     # --- Factor computation and ranking ---
     # Load domain groupings from DB
     with Session(_sync_engine) as session:
-        domain_rows = session.execute(
-            select(Domain).options(selectinload(Domain.stocks))
-        ).scalars().all()
+        domain_rows = (
+            session.execute(select(Domain).options(selectinload(Domain.stocks))).scalars().all()
+        )
         domain_groups = {d.name: [s.ticker for s in d.stocks] for d in domain_rows}
 
     if not domain_groups:
@@ -98,22 +102,31 @@ def fetch_cycle() -> None:
             for ticker, score in results.items():
                 logger.info(
                     "Domain=%s ticker=%s score=%.1f rank=%d",
-                    domain_name, ticker, score.composite_score, score.rank,
+                    domain_name,
+                    ticker,
+                    score.composite_score,
+                    score.rank,
                 )
                 fs = score.factor_scores
-                session.add(RankingResult(
-                    ticker=ticker,
-                    domain=domain_name,
-                    composite_score=score.composite_score,
-                    rank=score.rank,
-                    momentum=fs["momentum"].raw if "momentum" in fs else None,
-                    volume_change=fs["volume_change"].raw if "volume_change" in fs else None,
-                    volatility=fs["volatility"].raw if "volatility" in fs else None,
-                    relative_strength=fs["relative_strength"].raw if "relative_strength" in fs else None,
-                    financial_ratio=fs["financial_ratio"].raw if "financial_ratio" in fs else None,
-                    long_term_score=compute_long_term_score(ticker),
-                    computed_at=now_computed,
-                ))
+                session.add(
+                    RankingResult(
+                        ticker=ticker,
+                        domain=domain_name,
+                        composite_score=score.composite_score,
+                        rank=score.rank,
+                        momentum=fs["momentum"].raw if "momentum" in fs else None,
+                        volume_change=fs["volume_change"].raw if "volume_change" in fs else None,
+                        volatility=fs["volatility"].raw if "volatility" in fs else None,
+                        relative_strength=fs["relative_strength"].raw
+                        if "relative_strength" in fs
+                        else None,
+                        financial_ratio=fs["financial_ratio"].raw
+                        if "financial_ratio" in fs
+                        else None,
+                        long_term_score=compute_long_term_score(ticker),
+                        computed_at=now_computed,
+                    )
+                )
                 ranking_count += 1
         session.commit()
     logger.info("fetch_cycle: persisted %d ranking results", ranking_count)

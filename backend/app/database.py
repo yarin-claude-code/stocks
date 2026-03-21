@@ -22,28 +22,35 @@ async def seed_db():
     from .models.stock import Domain, Stock
 
     domain_data = [
-        {"name": "AI/Tech", "stocks": [
-            ("AAPL", "Apple Inc."),
-            ("MSFT", "Microsoft Corp."),
-            ("NVDA", "NVIDIA Corp."),
-            ("AMD", "Advanced Micro Devices"),
-            ("GOOGL", "Alphabet Inc."),
-        ]},
-        {"name": "EV", "stocks": [
-            ("TSLA", "Tesla Inc."),
-            ("RIVN", "Rivian Automotive"),
-        ]},
-        {"name": "Finance", "stocks": [
-            ("JPM", "JPMorgan Chase"),
-            ("GS", "Goldman Sachs"),
-        ]},
+        {
+            "name": "AI/Tech",
+            "stocks": [
+                ("AAPL", "Apple Inc."),
+                ("MSFT", "Microsoft Corp."),
+                ("NVDA", "NVIDIA Corp."),
+                ("AMD", "Advanced Micro Devices"),
+                ("GOOGL", "Alphabet Inc."),
+            ],
+        },
+        {
+            "name": "EV",
+            "stocks": [
+                ("TSLA", "Tesla Inc."),
+                ("RIVN", "Rivian Automotive"),
+            ],
+        },
+        {
+            "name": "Finance",
+            "stocks": [
+                ("JPM", "JPMorgan Chase"),
+                ("GS", "Goldman Sachs"),
+            ],
+        },
     ]
 
     async with async_session_maker() as session:
         for domain_info in domain_data:
-            result = await session.execute(
-                select(Domain).where(Domain.name == domain_info["name"])
-            )
+            result = await session.execute(select(Domain).where(Domain.name == domain_info["name"]))
             domain = result.scalar_one_or_none()
             if domain is None:
                 domain = Domain(name=domain_info["name"])
@@ -51,9 +58,7 @@ async def seed_db():
                 await session.flush()
 
             for ticker, name in domain_info["stocks"]:
-                result = await session.execute(
-                    select(Stock).where(Stock.ticker == ticker)
-                )
+                result = await session.execute(select(Stock).where(Stock.ticker == ticker))
                 stock = result.scalar_one_or_none()
                 if stock is None:
                     stock = Stock(ticker=ticker, name=name, domain_id=domain.id)

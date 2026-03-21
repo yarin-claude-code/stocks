@@ -64,10 +64,7 @@ async def get_custom_domains(
         .options(selectinload(UserDomain.tickers))
     )
     domains = result.scalars().all()
-    return [
-        DomainOut(id=d.id, name=d.name, tickers=[t.ticker for t in d.tickers])
-        for d in domains
-    ]
+    return [DomainOut(id=d.id, name=d.name, tickers=[t.ticker for t in d.tickers]) for d in domains]
 
 
 @router.post("", response_model=DomainOut, status_code=201)

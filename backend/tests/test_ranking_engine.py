@@ -9,6 +9,7 @@ All 6 required test cases covering:
   5. 0–100 scaling correctness
   6. Score breakdown structure (FactorScore fields)
 """
+
 from app.services.ranking_engine import (
     WEIGHT_FINANCIAL_RATIO,
     WEIGHT_MOMENTUM,
@@ -24,6 +25,7 @@ from app.services.ranking_engine import (
 # ---------------------------------------------------------------------------
 # Case 1: Single-stock domain
 # ---------------------------------------------------------------------------
+
 
 def test_single_stock_returns_score_50_and_rank_1():
     """A single-stock domain cannot be Z-scored. Must return 50.0 and rank 1."""
@@ -48,6 +50,7 @@ def test_single_stock_returns_score_50_and_rank_1():
 # Case 2: std == 0 guard — all identical factor values
 # ---------------------------------------------------------------------------
 
+
 def test_normalize_factor_std_zero_returns_all_zeros():
     """When all values are identical, std == 0. Must return [0.0, 0.0, 0.0], not raise."""
     result = normalize_factor([0.05, 0.05, 0.05])
@@ -60,6 +63,7 @@ def test_normalize_factor_std_zero_returns_all_zeros():
 # ---------------------------------------------------------------------------
 # Case 3: Outlier capping at mean ± 3σ
 # ---------------------------------------------------------------------------
+
 
 def test_normalize_factor_caps_outlier_before_z_scoring():
     """The value 100.0 is an extreme outlier. Without capping, its Z-score would be >> 5.
@@ -77,6 +81,7 @@ def test_normalize_factor_caps_outlier_before_z_scoring():
 # ---------------------------------------------------------------------------
 # Case 4: Missing factor (None) reweighting
 # ---------------------------------------------------------------------------
+
 
 def test_missing_factor_reweights_remaining_proportionally():
     """When volume_change is None for all stocks, remaining 4 factors must
@@ -123,6 +128,7 @@ def test_missing_factor_reweights_remaining_proportionally():
 # Case 5: 0–100 scaling correctness
 # ---------------------------------------------------------------------------
 
+
 def test_scaling_best_is_100_worst_is_0():
     """With 3 stocks having distinct final composite scores, the best must
     scale to 100.0, the worst to 0.0, and the middle must be between them.
@@ -156,12 +162,15 @@ def test_scaling_best_is_100_worst_is_0():
     scores = {t: result[t].composite_score for t in result}
     assert scores["BEST"] == 100.0, f"Best stock must be 100.0, got {scores['BEST']}"
     assert scores["WORST"] == 0.0, f"Worst stock must be 0.0, got {scores['WORST']}"
-    assert 0.0 < scores["MID"] < 100.0, f"Middle stock must be between 0 and 100, got {scores['MID']}"
+    assert 0.0 < scores["MID"] < 100.0, (
+        f"Middle stock must be between 0 and 100, got {scores['MID']}"
+    )
 
 
 # ---------------------------------------------------------------------------
 # Case 6: Score breakdown structure (FactorScore fields)
 # ---------------------------------------------------------------------------
+
 
 def test_factor_score_structure_has_all_required_fields():
     """Every StockScore must have factor_scores with all 5 factor keys.
@@ -173,7 +182,7 @@ def test_factor_score_structure_has_all_required_fields():
             "volume_change": 0.10,
             "volatility": -0.02,
             "relative_strength": 0.01,
-            "financial_ratio": None,   # intentionally None — common case
+            "financial_ratio": None,  # intentionally None — common case
         },
         "MSFT": {
             "momentum": 0.03,
@@ -197,9 +206,7 @@ def test_factor_score_structure_has_all_required_fields():
             f"{ticker}: factor_scores keys mismatch"
         )
         for factor_name, fs in stock.factor_scores.items():
-            assert isinstance(fs, FactorScore), (
-                f"{ticker}.{factor_name} is not a FactorScore"
-            )
+            assert isinstance(fs, FactorScore), f"{ticker}.{factor_name} is not a FactorScore"
             # Check all 4 attributes exist (raw can be float or None)
             assert hasattr(fs, "raw"), f"{ticker}.{factor_name} missing .raw"
             assert hasattr(fs, "normalized"), f"{ticker}.{factor_name} missing .normalized"
@@ -216,6 +223,7 @@ def test_factor_score_structure_has_all_required_fields():
 # Additional: empty domain returns empty dict
 # ---------------------------------------------------------------------------
 
+
 def test_empty_domain_returns_empty_dict():
     """rank_domain({}) must return {} without raising."""
     result = rank_domain({})
@@ -225,6 +233,7 @@ def test_empty_domain_returns_empty_dict():
 # ---------------------------------------------------------------------------
 # Additional: weight constants sum to 1.0
 # ---------------------------------------------------------------------------
+
 
 def test_weight_constants_sum_to_1():
     """The 5 named weight constants must sum exactly to 1.0."""

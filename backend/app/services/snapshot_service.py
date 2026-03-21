@@ -32,24 +32,30 @@ def snapshot_job() -> None:
     with Session(_sync_engine) as session:
         # Build domain_name -> domain_id map
         domain_map: dict[str, int] = {
-            name: id_
-            for name, id_ in session.execute(select(Domain.name, Domain.id)).all()
+            name: id_ for name, id_ in session.execute(select(Domain.name, Domain.id)).all()
         }
 
         # Get latest RankingResult per ticker (max computed_at subquery)
         from sqlalchemy import func
+
         latest_subq = (
-            select(RankingResult.ticker, func.max(RankingResult.computed_at).label("max_computed_at"))
+            select(
+                RankingResult.ticker, func.max(RankingResult.computed_at).label("max_computed_at")
+            )
             .group_by(RankingResult.ticker)
             .subquery()
         )
-        results = session.execute(
-            select(RankingResult).join(
-                latest_subq,
-                (RankingResult.ticker == latest_subq.c.ticker)
-                & (RankingResult.computed_at == latest_subq.c.max_computed_at),
+        results = (
+            session.execute(
+                select(RankingResult).join(
+                    latest_subq,
+                    (RankingResult.ticker == latest_subq.c.ticker)
+                    & (RankingResult.computed_at == latest_subq.c.max_computed_at),
+                )
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
 
         if not results:
             logger.warning("snapshot_job: no RankingResult rows found, skipping")
@@ -57,27 +63,33 @@ def snapshot_job() -> None:
 
         for result in results:
             # Get last 7 DailySnapshot scores for this ticker (excluding today)
-            past = session.execute(
-                select(DailySnapshot.composite_score)
-                .where(
-                    DailySnapshot.ticker == result.ticker,
-                    DailySnapshot.snap_date >= today - timedelta(days=7),
-                    DailySnapshot.snap_date < today,
+            past = (
+                session.execute(
+                    select(DailySnapshot.composite_score)
+                    .where(
+                        DailySnapshot.ticker == result.ticker,
+                        DailySnapshot.snap_date >= today - timedelta(days=7),
+                        DailySnapshot.snap_date < today,
+                    )
+                    .order_by(DailySnapshot.snap_date)
                 )
-                .order_by(DailySnapshot.snap_date)
-            ).scalars().all()
+                .scalars()
+                .all()
+            )
 
             slope = compute_trend(list(past) + [result.composite_score])
             domain_id = domain_map.get(result.domain)
 
-            session.merge(DailySnapshot(
-                ticker=result.ticker,
-                snap_date=today,
-                composite_score=result.composite_score,
-                rank=result.rank,
-                domain_id=domain_id,
-                trend_slope=slope,
-            ))
+            session.merge(
+                DailySnapshot(
+                    ticker=result.ticker,
+                    snap_date=today,
+                    composite_score=result.composite_score,
+                    rank=result.rank,
+                    domain_id=domain_id,
+                    trend_slope=slope,
+                )
+            )
 
         session.commit()
         logger.info("snapshot_job: wrote %d snapshots for %s", len(results), today)
