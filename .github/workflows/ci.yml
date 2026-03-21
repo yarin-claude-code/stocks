@@ -5,6 +5,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   packages: write
@@ -23,6 +27,8 @@ jobs:
         run: |
           pip install ruff
           ruff check backend/
+      - name: Format check backend (ruff)
+        run: ruff format --check backend/
 
       - uses: actions/setup-node@v4
         with:
@@ -32,6 +38,26 @@ jobs:
         run: |
           npm ci
           npm run lint
+      - name: Type check frontend (tsc)
+        working-directory: frontend
+        run: npx tsc --noEmit
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          severity: 'HIGH,CRITICAL'
+          exit-code: '1'
+      - name: TruffleHog secret scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
 
   test-backend:
     name: Backend Tests
@@ -123,3 +149,41 @@ jobs:
           labels: ${{ steps.meta-frontend.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    needs: [docker]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            cd ~/stock-ranker
+            CURRENT_TAG=$(cat ~/deploys/stock-ranker/.current-tag 2>/dev/null || echo "none")
+            NEW_TAG="${{ github.sha }}"
+
+            git pull origin main
+            docker compose pull
+            docker compose up -d
+
+            sleep 10
+            if curl -sf http://localhost:8001/api/health > /dev/null; then
+              mkdir -p ~/deploys/stock-ranker
+              echo "$NEW_TAG" > ~/deploys/stock-ranker/.current-tag
+              echo "Deploy successful: $NEW_TAG"
+            else
+              echo "Health check failed! Rolling back to $CURRENT_TAG"
+              if [ "$CURRENT_TAG" != "none" ]; then
+                git checkout "$CURRENT_TAG"
+                docker compose up -d
+              fi
+              exit 1
+            fi
+
+            docker image prune -f
