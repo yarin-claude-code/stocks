@@ -1,19 +1,19 @@
 import type { StockRanking } from './BestOverall'
 
-const WEIGHTS: Record<string, number> = {
-  momentum: 0.30,
-  volume_change: 0.20,
-  volatility: 0.20,
-  relative_strength: 0.15,
-  financial_ratio: 0.15,
+const LABELS: Record<string, string> = {
+  momentum:          'Is the price going up?',
+  volume_change:     'Are people buying more?',
+  volatility:        'How steady is the price?',
+  relative_strength: 'Beating its sector?',
+  financial_ratio:   'Is the stock fairly priced?',
 }
 
-const LABELS: Record<string, string> = {
-  momentum: 'Is the price going up?',
-  volume_change: 'Are people buying more?',
-  volatility: 'How steady is the price?',
-  relative_strength: 'Beating its sector?',
-  financial_ratio: 'Is the stock fairly priced?',
+const IMPORTANCE: Record<string, string> = {
+  momentum:          'High importance',
+  volume_change:     'Medium importance',
+  volatility:        'Medium importance',
+  relative_strength: 'Lower importance',
+  financial_ratio:   'Lower importance',
 }
 
 function gradeLabel(score: number) {
@@ -24,9 +24,9 @@ function gradeLabel(score: number) {
   return { label: 'Avoid', color: 'text-red-400 bg-red-500/10 border-red-500/20' }
 }
 
-function FactorRow({ name, value }: { name: string; value: number | null }) {
-  const weight = WEIGHTS[name]
+function SignalRow({ name, value }: { name: string; value: number | null }) {
   const label = LABELS[name]
+  const importance = IMPORTANCE[name]
   const hasValue = value != null
   const clamped = hasValue ? Math.max(-3, Math.min(3, value!)) : 0
   const pct = ((clamped + 3) / 6) * 100
@@ -37,14 +37,14 @@ function FactorRow({ name, value }: { name: string; value: number | null }) {
       <div className="flex justify-between items-center mb-1.5">
         <div>
           <span className="text-sm text-slate-200 font-medium">{label}</span>
-          <span className="text-xs text-slate-500 ml-2">{(weight * 100).toFixed(0)}% weight</span>
+          <span className="text-xs text-slate-600 ml-2">{importance}</span>
         </div>
         {hasValue ? (
-          <span className={`text-sm font-mono font-semibold ${positive ? 'text-green-400' : 'text-red-400'}`}>
-            {value!.toFixed(3)}
+          <span className={`text-xs font-semibold px-2 py-0.5 rounded ${positive ? 'text-green-400 bg-green-500/10' : 'text-red-400 bg-red-500/10'}`}>
+            {positive ? '↑ Good' : '↓ Weak'}
           </span>
         ) : (
-          <span className="text-xs text-slate-600 italic">N/A</span>
+          <span className="text-xs text-slate-600 italic">No data</span>
         )}
       </div>
       <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
@@ -75,7 +75,7 @@ export function ScoreBreakdown({ stock, onClose }: { stock: StockRanking; onClos
             <h2 className="text-2xl font-bold text-white">{stock.ticker}</h2>
             <span className={`text-xs font-semibold px-2 py-0.5 rounded border ${grade.color}`}>{grade.label}</span>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 text-xl transition-colors">✕</button>
+          <button onClick={onClose} className="cursor-pointer text-slate-500 hover:text-slate-200 text-xl transition-colors">✕</button>
         </div>
 
         {/* Score ring */}
@@ -95,15 +95,15 @@ export function ScoreBreakdown({ stock, onClose }: { stock: StockRanking; onClos
             <text x="48" y="66" textAnchor="middle" fontSize="10" fill="#64748b">/ 100</text>
           </svg>
           <div className="text-sm text-slate-400 space-y-1">
-            <p>Rank <span className="text-white font-bold">#{stock.rank}</span></p>
-            <p className="text-xs text-slate-500">Weighted composite<br />of 5 factors</p>
+            <p>Ranked <span className="text-white font-bold">#{stock.rank}</span> in its sector</p>
+            <p className="text-xs text-slate-500">Score based on<br />5 market signals</p>
           </div>
         </div>
 
-        {/* Factor breakdown */}
+        {/* Signal breakdown */}
         <div>
           {Object.entries(stock.factors).map(([name, value]) => (
-            <FactorRow key={name} name={name} value={value} />
+            <SignalRow key={name} name={name} value={value} />
           ))}
         </div>
       </div>

@@ -40,13 +40,13 @@ export function BestOverall({ stock }: { stock: StockRanking }) {
     <div className="rounded-2xl border border-indigo-500/30 bg-gradient-to-r from-indigo-950/60 to-indigo-900/30 p-5 mb-6 flex items-center gap-5">
       <ScoreRing score={stock.composite_score} />
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-semibold text-indigo-400 uppercase tracking-widest mb-1">Top Ranked</p>
+        <p className="text-xs font-semibold text-indigo-400 uppercase tracking-widest mb-1">Best Pick Right Now</p>
         <p className="text-3xl font-bold text-white">{stock.ticker}</p>
-        <p className="text-sm text-slate-400 mt-0.5">Composite score {stock.composite_score.toFixed(1)} / 100</p>
+        <p className="text-sm text-slate-400 mt-0.5">Our algorithm's #1 pick today</p>
       </div>
       {momentumPct != null && (
         <div className="text-right shrink-0">
-          <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">5d momentum</p>
+          <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">This week</p>
           <p className={`text-2xl font-bold ${parseFloat(momentumPct) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {parseFloat(momentumPct) >= 0 ? '+' : ''}{momentumPct}%
           </p>

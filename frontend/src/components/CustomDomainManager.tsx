@@ -158,7 +158,7 @@ export function CustomDomainManager() {
         <button
           onClick={handleCreate}
           disabled={createMutation.isPending}
-          className="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium px-4 py-2 rounded-lg"
+          className="cursor-pointer bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium px-4 py-2 rounded-lg"
         >
           {createMutation.isPending ? 'Creating...' : 'Create'}
         </button>
@@ -182,14 +182,14 @@ export function CustomDomainManager() {
                       setEditTickers(domain.tickers.join(', '))
                       setError(null)
                     }}
-                    className="text-xs text-indigo-400 hover:text-indigo-300 px-2 py-1 border border-indigo-500/30 rounded"
+                    className="cursor-pointer text-xs text-indigo-400 hover:text-indigo-300 px-2 py-1 border border-indigo-500/30 rounded"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => deleteMutation.mutate(domain.id)}
                     disabled={deleteMutation.isPending}
-                    className="text-xs text-red-400 hover:text-red-300 px-2 py-1 border border-red-500/30 rounded disabled:opacity-50"
+                    className="cursor-pointer text-xs text-red-400 hover:text-red-300 px-2 py-1 border border-red-500/30 rounded disabled:opacity-50"
                   >
                     Delete
                   </button>
@@ -221,13 +221,13 @@ export function CustomDomainManager() {
                     <button
                       onClick={() => handleSave(domain.id)}
                       disabled={updateMutation.isPending}
-                      className="text-xs bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-3 py-1 rounded"
+                      className="cursor-pointer text-xs bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-3 py-1 rounded"
                     >
                       {updateMutation.isPending ? 'Saving...' : 'Save'}
                     </button>
                     <button
                       onClick={() => { setEditingId(null); setError(null) }}
-                      className="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1 rounded"
+                      className="cursor-pointer text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1 rounded"
                     >
                       Cancel
                     </button>
