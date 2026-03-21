@@ -5,14 +5,15 @@ Revises: 8325633ad9d9
 Create Date: 2026-02-21
 
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
 
 from alembic import op
 
-revision: str = '05_02_user_domains'
-down_revision: Union[str, Sequence[str], None] = '05_01_daily_snapshots'
+revision: str = "05_02_user_domains"
+down_revision: Union[str, Sequence[str], None] = "05_01_daily_snapshots"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

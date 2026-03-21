@@ -5,13 +5,14 @@ Revises: f9bb5673b8f7
 Create Date: 2026-02-20 02:48:12.866123
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = '8325633ad9d9'
-down_revision: Union[str, Sequence[str], None] = 'f9bb5673b8f7'
+revision: str = "8325633ad9d9"
+down_revision: Union[str, Sequence[str], None] = "f9bb5673b8f7"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

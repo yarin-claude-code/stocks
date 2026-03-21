@@ -9,6 +9,7 @@ compute_factors_for_ticker() extracts all 5 raw factor values from a
 30-day history DataFrame. Each factor is independently wrapped in
 try/except so one failure does not block others.
 """
+
 import logging
 import math
 
@@ -18,18 +19,55 @@ import yfinance as yf
 logger = logging.getLogger(__name__)
 
 SEED_TICKERS = [
-    "AAPL", "MSFT", "NVDA", "AMD", "GOOGL",
-    "TSLA", "RIVN", "NIO", "LCID",
-    "JPM", "GS", "BAC", "MS",
-    "JNJ", "UNH", "PFE", "ABBV",
-    "XOM", "CVX", "COP", "SLB",
-    "AMZN", "WMT", "HD", "MCD",
-    "TSM", "INTC", "QCOM", "AVGO",
-    "LMT", "RTX", "NOC", "GD",
-    "COIN", "PYPL", "SQ", "HOOD",
-    "CAT", "DE", "HON", "UPS",
-    "NFLX", "DIS", "SPOT", "PARA",
-    "AMT", "PLD", "EQIX", "SPG",
+    "AAPL",
+    "MSFT",
+    "NVDA",
+    "AMD",
+    "GOOGL",
+    "TSLA",
+    "RIVN",
+    "NIO",
+    "LCID",
+    "JPM",
+    "GS",
+    "BAC",
+    "MS",
+    "JNJ",
+    "UNH",
+    "PFE",
+    "ABBV",
+    "XOM",
+    "CVX",
+    "COP",
+    "SLB",
+    "AMZN",
+    "WMT",
+    "HD",
+    "MCD",
+    "TSM",
+    "INTC",
+    "QCOM",
+    "AVGO",
+    "LMT",
+    "RTX",
+    "NOC",
+    "GD",
+    "COIN",
+    "PYPL",
+    "SQ",
+    "HOOD",
+    "CAT",
+    "DE",
+    "HON",
+    "UPS",
+    "NFLX",
+    "DIS",
+    "SPOT",
+    "PARA",
+    "AMT",
+    "PLD",
+    "EQIX",
+    "SPG",
 ]
 
 
@@ -147,9 +185,9 @@ def compute_long_term_score(ticker: str) -> float | None:
 
 def compute_factors_for_ticker(
     ticker: str,
-    history: "pd.DataFrame",       # full multi-ticker yf.download() result (30d)  # noqa: F821
+    history: "pd.DataFrame",  # full multi-ticker yf.download() result (30d)  # noqa: F821
     all_histories: "pd.DataFrame",  # same object — used for relative_strength  # noqa: F821
-    domain_tickers: list[str],      # all tickers in this stock's domain
+    domain_tickers: list[str],  # all tickers in this stock's domain
 ) -> dict[str, float | None]:
     """Compute all 5 raw factor values for a single ticker from a 30-day history DataFrame.
 

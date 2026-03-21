@@ -15,6 +15,7 @@ Factor weights (sum to 1.0):
   relative_strength 0.15  — stock return minus domain median; pure peer comparison
   financial_ratio   0.15  — trailingPE inverted before passing in; cheaper = higher score
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -50,9 +51,9 @@ class FactorScore:
     """Per-factor breakdown stored inside StockScore."""
 
     raw: Optional[float]
-    normalized: Optional[float]   # None when factor excluded (missing raw)
-    weighted: Optional[float]     # None when factor excluded
-    effective_weight: float       # Actual weight used after proportional reweighting
+    normalized: Optional[float]  # None when factor excluded (missing raw)
+    weighted: Optional[float]  # None when factor excluded
+    effective_weight: float  # Actual weight used after proportional reweighting
 
 
 @dataclass
@@ -60,8 +61,8 @@ class StockScore:
     """Final ranking result for a single ticker within its domain."""
 
     ticker: str
-    composite_score: float        # 0–100 within peer domain
-    rank: int                     # 1 = best
+    composite_score: float  # 0–100 within peer domain
+    rank: int  # 1 = best
     factor_scores: dict[str, FactorScore]
 
 
@@ -145,11 +146,7 @@ def compute_composite(
     (weighted_sum, {factor_name: effective_weight_used})
     If ALL factors are None, returns (0.0, {}).
     """
-    present = {
-        name: z
-        for name, z in normalized_dict.items()
-        if z is not None
-    }
+    present = {name: z for name, z in normalized_dict.items() if z is not None}
 
     if not present:
         return 0.0, {}
@@ -161,9 +158,7 @@ def compute_composite(
         effective_weights = {name: 1.0 / len(present) for name in present}
     else:
         effective_weights = {
-            name: weights[name] / total_base_weight
-            for name in present
-            if name in weights
+            name: weights[name] / total_base_weight for name in present if name in weights
         }
 
     weighted_sum = sum(z * effective_weights[name] for name, z in present.items())
@@ -270,15 +265,10 @@ def rank_domain(
     per_ticker_effective_weights: dict[str, dict[str, float]] = {}
 
     for i, ticker in enumerate(tickers):
-        normalized_dict = {
-            fname: normalized_by_factor[fname][i]
-            for fname in factor_names
-        }
+        normalized_dict = {fname: normalized_by_factor[fname][i] for fname in factor_names}
         per_ticker_normalized[ticker] = normalized_dict
 
-        weighted_sum, effective_weights = compute_composite(
-            normalized_dict, _FACTOR_WEIGHTS
-        )
+        weighted_sum, effective_weights = compute_composite(normalized_dict, _FACTOR_WEIGHTS)
         composite_scores[ticker] = weighted_sum
         per_ticker_effective_weights[ticker] = effective_weights
 

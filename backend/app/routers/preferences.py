@@ -39,9 +39,7 @@ async def put_preferences(
     db: AsyncSession = Depends(get_db),
 ):
     uid = uuid.UUID(user_id)
-    result = await db.execute(
-        select(UserPreference).where(UserPreference.user_id == uid)
-    )
+    result = await db.execute(select(UserPreference).where(UserPreference.user_id == uid))
     pref = result.scalar_one_or_none()
     if pref is None:
         pref = UserPreference(user_id=uid, domains=body.domains)

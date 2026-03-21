@@ -61,12 +61,16 @@ def _row_to_stock_ranking(row: RankingResult) -> StockRanking:
 async def get_rankings(db: AsyncSession = Depends(get_db)):
     latest_q = select(func.max(RankingResult.computed_at)).scalar_subquery()
     rows = (
-        await db.execute(
-            select(RankingResult)
-            .where(RankingResult.computed_at == latest_q)
-            .order_by(RankingResult.domain, RankingResult.rank)
+        (
+            await db.execute(
+                select(RankingResult)
+                .where(RankingResult.computed_at == latest_q)
+                .order_by(RankingResult.domain, RankingResult.rank)
+            )
         )
-    ).scalars().all()
+        .scalars()
+        .all()
+    )
 
     if not rows:
         return RankingsResponse(domains=[], best_overall=None, last_fetched=None)
@@ -94,15 +98,19 @@ async def get_rankings(db: AsyncSession = Depends(get_db)):
 async def get_domain_rankings(domain: str, db: AsyncSession = Depends(get_db)):
     latest_q = select(func.max(RankingResult.computed_at)).scalar_subquery()
     rows = (
-        await db.execute(
-            select(RankingResult)
-            .where(
-                RankingResult.computed_at == latest_q,
-                RankingResult.domain == domain,
+        (
+            await db.execute(
+                select(RankingResult)
+                .where(
+                    RankingResult.computed_at == latest_q,
+                    RankingResult.domain == domain,
+                )
+                .order_by(RankingResult.rank)
             )
-            .order_by(RankingResult.rank)
         )
-    ).scalars().all()
+        .scalars()
+        .all()
+    )
 
     if not rows:
         raise HTTPException(status_code=404, detail=f"Domain '{domain}' not found or no data")
